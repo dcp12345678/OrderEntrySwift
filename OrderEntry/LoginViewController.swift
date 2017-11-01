@@ -35,49 +35,49 @@ class LoginViewController: UIViewController {
     @IBAction func loginOnPress(_ sender: Any) {
         
         do {
-            
-            Helper.showPleaseWaitOverlay(parentController: self)
+            Helper.showPleaseWaitOverlay(parentController: self, waitMessage: "Logging in...")
 
-            let baseUrl:String? = try Helper.getConfigValue(forKey: "restApi.baseUrl", isRequired: true)
+            let baseUrl:String = (try Helper.getConfigValue(forKey: "restApi.baseUrl", isRequired: true))!
             
             async({ _ -> Any? in
                 
                 do {
-                    let val = try await(in: .background, Helper.callWebService(withUrl: "https://jsonplaceholder.typicode.com/users",
-                                                                               httpMethod: "GET", httpBody: nil))
+//                    let val = try await(in: .background, Helper.callWebService(withUrl: "https://jsonplaceholder.typicode.com/users",
+//                                                                               httpMethod: "GET", httpBody: nil))
                     
-                    let parameters = ["username": "@joey", "tweet": "HelloWorld"]
+                    let parameters = ["username": "joey", "password": "password"]
                     guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
                         throw OrderEntryError.webServiceError(msg: "Unable to serialize parameters to JSON")
                     }
+
+                    let loginUrl = "\(baseUrl)/auth/login"
+                    let val2 = try await(in: .background, Helper.callWebService(
+                        withUrl: loginUrl, httpMethod: "POST", httpBody: httpBody))
                     
-                    let val2 = try await(in: .background, Helper.callWebService(withUrl: "https://jsonplaceholder.typicode.com/posts",
-                                                                                httpMethod: "POST", httpBody: httpBody))
-                    
-                    print(val!)
+//                    print(val!)
                     print(val2!)
-                    return val
-                } catch OrderEntryError.testError(let msg) {
-                    print("Got OrderEntryError.testError: msg = \(msg)");
+                    
+                    return val2
+                } catch OrderEntryError.webServiceError(let msg) {
+                    print("Error calling web service: msg = \(msg)");
                     return ""
                 } catch {
                     print("Got some other error: error = \(error)");
                     return ""
                 }
             }).then({res in
-                print("final result = \(res)")
+                let dict = res as! [String: Any]
+                print("final result = \(dict)")
                 Helper.hidePleaseWaitOverlay() { self.performSegue(withIdentifier: "goToMainScreen", sender: self) }
-                
             })
         } catch (OrderEntryError.configurationError(let msg)) {
-            Helper.hidePleaseWaitOverlay(completion: nil)
-            Helper.showError(parentController: self, errorMessage: "Configuration error: \(msg)")
+            Helper.hidePleaseWaitOverlay() {
+                Helper.showError(parentController: self, errorMessage: "Configuration error: \(msg)")
+            }
         } catch {
-            Helper.hidePleaseWaitOverlay(completion: nil)
-            Helper.showError(parentController: self, errorMessage: "Unexpected error: \(error)")
+            Helper.hidePleaseWaitOverlay() {
+                Helper.showError(parentController: self, errorMessage: "Unexpected error: \(error)")
+            }
         }
-        
-        
-        
     }
 }

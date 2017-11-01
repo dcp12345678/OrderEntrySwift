@@ -76,11 +76,18 @@ class Helper {
 
     static func showError(parentController: UIViewController, errorMessage: String) {
         print("inside showError, errorMesage = \(errorMessage)")
+        let controller = UIAlertController(
+            title:"Something went wrong!",
+            message: errorMessage, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "OK",
+                                         style: .cancel, handler: nil)
+        controller.addAction(cancelAction)
+        parentController.present(controller, animated: true, completion: nil)
     }
     
 
-    static func showPleaseWaitOverlay(parentController: UIViewController) {
-        pleaseWaitController = UIAlertController(title: nil, message: "Please wait...", preferredStyle: .alert)
+    static func showPleaseWaitOverlay(parentController: UIViewController, waitMessage: String = "Please wait...") {
+        pleaseWaitController = UIAlertController(title: nil, message: waitMessage, preferredStyle: .alert)
             
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
@@ -95,7 +102,13 @@ class Helper {
         pleaseWaitController?.dismiss(animated: true, completion: completion)
         pleaseWaitController = nil
     }
-        
+    
+    static func hidePleaseWaitOverlay() -> Promise<Void> {
+        return Promise<Void>(in: .background, { resolve, reject, _ in
+            pleaseWaitController?.dismiss(animated: true) { resolve() }
+        })
+    }
+    
     static func testPromise() -> Promise<Int> {
         return Promise<Int>(in: .background, { resolve, reject, _ in
             Thread.sleep(forTimeInterval: 2.0)
