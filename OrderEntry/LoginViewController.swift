@@ -10,6 +10,10 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
+    @IBOutlet weak var loginID: UITextField!
+    
+    @IBOutlet weak var password: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,8 +37,11 @@ class LoginViewController: UIViewController {
     */
 
     @IBAction func loginOnPress(_ sender: Any) {
-        
+                
         do {
+            try Helper.checkForNilOrEmpty(forField: "login ID", fieldValue: loginID.text)
+            try Helper.checkForNilOrEmpty(forField: "password", fieldValue: password.text)
+            
             Helper.showPleaseWaitOverlay(parentController: self, waitMessage: "Logging in...")
 
             let baseUrl:String = (try Helper.getConfigValue(forKey: "restApi.baseUrl", isRequired: true))!
@@ -45,7 +52,7 @@ class LoginViewController: UIViewController {
 //                    let val = try await(in: .background, Helper.callWebService(withUrl: "https://jsonplaceholder.typicode.com/users",
 //                                                                               httpMethod: "GET", httpBody: nil))
                     
-                    let parameters = ["username": "joey", "password": "password"]
+                    let parameters = ["username": self.loginID.text!.trim(), "password": self.password.text!.trim()]
                     guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
                         throw OrderEntryError.webServiceError(msg: "Unable to serialize parameters to JSON")
                     }
@@ -54,7 +61,6 @@ class LoginViewController: UIViewController {
                     let val2 = try await(in: .background, Helper.callWebService(
                         withUrl: loginUrl, httpMethod: "POST", httpBody: httpBody))
                     
-//                    print(val!)
                     print(val2!)
                     
                     return val2
@@ -68,15 +74,27 @@ class LoginViewController: UIViewController {
             }).then({res in
                 let dict = res as! [String: Any]
                 print("final result = \(dict)")
-                Helper.hidePleaseWaitOverlay() { self.performSegue(withIdentifier: "goToMainScreen", sender: self) }
+                if (dict["result"] as! String == "successful login") {
+                    // login was successful, so go to main login screen
+                    Helper.hidePleaseWaitOverlay() { self.performSegue(withIdentifier: "goToMainScreen", sender: self) }
+                } else {
+                    Helper.hidePleaseWaitOverlay() {
+                        Helper.showError(parentController: self, errorMessage: dict["result"] as! String,
+                                         title: "Login Failed")
+                    }
+                }
             })
         } catch (OrderEntryError.configurationError(let msg)) {
             Helper.hidePleaseWaitOverlay() {
-                Helper.showError(parentController: self, errorMessage: "Configuration error: \(msg)")
+                Helper.showError(parentController: self, errorMessage: msg, title: "Configuration Error")
+            }
+        } catch (OrderEntryError.inputValueError(let msg)) {
+            Helper.hidePleaseWaitOverlay() {
+                Helper.showError(parentController: self, errorMessage: msg, title: "Invalid Input")
             }
         } catch {
             Helper.hidePleaseWaitOverlay() {
-                Helper.showError(parentController: self, errorMessage: "Unexpected error: \(error)")
+                Helper.showError(parentController: self, errorMessage: error as! String, title: "Unexpected error")
             }
         }
     }

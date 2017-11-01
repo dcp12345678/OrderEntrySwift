@@ -9,6 +9,13 @@
 import Foundation
 import UIKit
 
+
+extension String {
+    func trim() -> String {
+        return self.trimmingCharacters(in: NSCharacterSet.whitespaces)
+    }
+}
+
 class Helper {
     
     static var pleaseWaitController: UIViewController?
@@ -37,7 +44,7 @@ class Helper {
             
             // make sure URL is valid
             guard let webServiceUrl = URL(string: url) else {
-                reject(OrderEntryError.invalidUrl(url: url))
+                reject(OrderEntryError.urlError(url: url))
                 return
             }
             
@@ -74,10 +81,10 @@ class Helper {
         return promise;
     }
 
-    static func showError(parentController: UIViewController, errorMessage: String) {
+    static func showError(parentController: UIViewController, errorMessage: String, title: String = "Something went wrong!") {
         print("inside showError, errorMesage = \(errorMessage)")
         let controller = UIAlertController(
-            title:"Something went wrong!",
+            title: title,
             message: errorMessage, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "OK",
                                          style: .cancel, handler: nil)
@@ -99,14 +106,33 @@ class Helper {
     }
     
     static func hidePleaseWaitOverlay(completion: (() -> Void)?) {
-        pleaseWaitController?.dismiss(animated: true, completion: completion)
-        pleaseWaitController = nil
+        if pleaseWaitController != nil {
+            pleaseWaitController!.dismiss(animated: true, completion: completion)
+            pleaseWaitController = nil
+        } else {
+            // even though the pleaseWaitController is nil, if there's a completion handler
+            // we still need to call it
+            if let completion = completion {
+                completion()
+            }
+        }
     }
     
     static func hidePleaseWaitOverlay() -> Promise<Void> {
         return Promise<Void>(in: .background, { resolve, reject, _ in
-            pleaseWaitController?.dismiss(animated: true) { resolve() }
+            if let pleaseWaitController = pleaseWaitController {
+                pleaseWaitController.dismiss(animated: true) { resolve() }
+            } else {
+                resolve()
+            }
         })
+    }
+    
+    static func checkForNilOrEmpty(forField fieldName: String, fieldValue: String?) throws {
+        guard let text = fieldValue,
+                  !text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else {
+            throw OrderEntryError.inputValueError(msg: "You must enter a value for \(fieldName)")
+        }
     }
     
     static func testPromise() -> Promise<Int> {
