@@ -39,25 +39,31 @@ class Helper {
     }
     
     
-    static func callWebService(withUrl url: String, httpMethod: String, httpBody: Data?) -> Promise<Any?> {
-        let promise = Promise<Any?>(in: .background, { resolve, reject, _ in
+    static func callWebService(withUrl url: String, httpMethod: String, httpBody: Data?) throws -> Any? {
+        // make sure URL is valid
+        guard let webServiceUrl = URL(string: url) else {
+            throw OrderEntryError.urlError(url: url)
+        }
             
-            // make sure URL is valid
-            guard let webServiceUrl = URL(string: url) else {
-                reject(OrderEntryError.urlError(url: url))
-                return
-            }
+        // prepare the http request
+        var request = URLRequest(url: webServiceUrl)
+        request.httpMethod = httpMethod
+        if let httpBody = httpBody {
+            request.httpBody = httpBody
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        }
             
-            // prepare the http request
-            var request = URLRequest(url: webServiceUrl)
-            request.httpMethod = httpMethod
-            if let httpBody = httpBody {
-                request.httpBody = httpBody
-                request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            }
-            
-            let session = URLSession.shared
-            
+        let session = URLSession.shared
+        
+        let group = DispatchGroup()
+        group.enter()
+        let queue = DispatchQueue.global(qos: .default)
+        
+        var json: Any = "No Result"
+        var err: OrderEntryError? = nil
+        
+        queue.async {
+            Thread.sleep(forTimeInterval: 2)
             // create the task to make the web service call asynchronously
             session.dataTask(with: request) { (data, response, error) in
                 if let response = response {
@@ -66,19 +72,28 @@ class Helper {
                 
                 if let data = data {
                     do {
-                        let json = try JSONSerialization.jsonObject(with: data, options: [])
+                        json = try JSONSerialization.jsonObject(with: data, options: [])
                         print(json)
-                        resolve(json)
                     } catch {
                         print(error)
-                        reject(OrderEntryError.webServiceError(msg: "Error serializing JSON result returned from web service"))
-                        return
+                        err = OrderEntryError.webServiceError(msg: "Error serializing JSON result returned from web service")
                     }
                 }
                 
+                group.leave()
+                
             }.resume()
-        })
-        return promise;
+        }
+        
+        print("calling group.wait")
+        group.wait()
+        print("done calling group.wait")
+        
+        if err != nil {
+            throw err!
+        }
+        
+        return json
     }
 
     static func showError(parentController: UIViewController, errorMessage: String, title: String = "Something went wrong!") {
@@ -93,39 +108,24 @@ class Helper {
     }
     
 
-    static func showPleaseWaitOverlay(parentController: UIViewController, waitMessage: String = "Please wait...") {
+    static func showPleaseWaitOverlay(parentController: UIViewController, waitMessage: String = "Please wait...",
+                                      completion: (() -> Void)?) {
         pleaseWaitController = UIAlertController(title: nil, message: waitMessage, preferredStyle: .alert)
             
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
         loadingIndicator.startAnimating();
-            
         pleaseWaitController!.view.addSubview(loadingIndicator)
-        parentController.present(pleaseWaitController!, animated: true, completion: nil)
+        
+        parentController.present(pleaseWaitController!, animated: false, completion: completion)
     }
     
-    static func hidePleaseWaitOverlay(completion: (() -> Void)?) {
+    static func hidePleaseWaitOverlay(completion: (() -> Void)? = nil) {
         if pleaseWaitController != nil {
-            pleaseWaitController!.dismiss(animated: true, completion: completion)
+            pleaseWaitController!.dismiss(animated: false, completion: completion)
             pleaseWaitController = nil
-        } else {
-            // even though the pleaseWaitController is nil, if there's a completion handler
-            // we still need to call it
-            if let completion = completion {
-                completion()
-            }
         }
-    }
-    
-    static func hidePleaseWaitOverlay() -> Promise<Void> {
-        return Promise<Void>(in: .background, { resolve, reject, _ in
-            if let pleaseWaitController = pleaseWaitController {
-                pleaseWaitController.dismiss(animated: true) { resolve() }
-            } else {
-                resolve()
-            }
-        })
     }
     
     static func checkForNilOrEmpty(forField fieldName: String, fieldValue: String?) throws {
@@ -134,12 +134,4 @@ class Helper {
             throw OrderEntryError.inputValueError(msg: "You must enter a value for \(fieldName)")
         }
     }
-    
-    static func testPromise() -> Promise<Int> {
-        return Promise<Int>(in: .background, { resolve, reject, _ in
-            Thread.sleep(forTimeInterval: 2.0)
-            let ret = 42
-            //throw OrderEntryError.webServiceError(msg: "this is a test error message")
-            resolve(ret)
-        })
-    }}
+}

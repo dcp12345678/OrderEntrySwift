@@ -16,28 +16,6 @@
 		8A058EBE1FA3DBD300EE27B5 /* EditOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A058EBD1FA3DBD300EE27B5 /* EditOrderViewController.swift */; };
 		8A058EC01FA401E100EE27B5 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A058EBF1FA401E100EE27B5 /* Config.plist */; };
 		8A058EC21FA4027F00EE27B5 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A058EC11FA4027F00EE27B5 /* Helper.swift */; };
-		8A9674661FA7CD5E00A278EA /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9674391FA7CD5E00A278EA /* Commons.swift */; };
-		8A9674671FA7CD5E00A278EA /* Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96743A1FA7CD5E00A278EA /* Context.swift */; };
-		8A9674681FA7CD5E00A278EA /* Promise+All.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96743B1FA7CD5E00A278EA /* Promise+All.swift */; };
-		8A9674691FA7CD5E00A278EA /* Promise+Always.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96743C1FA7CD5E00A278EA /* Promise+Always.swift */; };
-		8A96746A1FA7CD5E00A278EA /* Promise+Any.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96743D1FA7CD5E00A278EA /* Promise+Any.swift */; };
-		8A96746B1FA7CD5E00A278EA /* Promise+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96743E1FA7CD5E00A278EA /* Promise+Async.swift */; };
-		8A96746C1FA7CD5E00A278EA /* Promise+Await.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96743F1FA7CD5E00A278EA /* Promise+Await.swift */; };
-		8A96746D1FA7CD5E00A278EA /* Promise+Cancel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9674401FA7CD5E00A278EA /* Promise+Cancel.swift */; };
-		8A96746E1FA7CD5E00A278EA /* Promise+Catch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9674411FA7CD5E00A278EA /* Promise+Catch.swift */; };
-		8A96746F1FA7CD5E00A278EA /* Promise+Defer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9674421FA7CD5E00A278EA /* Promise+Defer.swift */; };
-		8A9674701FA7CD5E00A278EA /* Promise+Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9674431FA7CD5E00A278EA /* Promise+Map.swift */; };
-		8A9674711FA7CD5E00A278EA /* Promise+Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9674441FA7CD5E00A278EA /* Promise+Observer.swift */; };
-		8A9674721FA7CD5E00A278EA /* Promise+Pass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9674451FA7CD5E00A278EA /* Promise+Pass.swift */; };
-		8A9674731FA7CD5E00A278EA /* Promise+Recover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9674461FA7CD5E00A278EA /* Promise+Recover.swift */; };
-		8A9674741FA7CD5E00A278EA /* Promise+Reduce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9674471FA7CD5E00A278EA /* Promise+Reduce.swift */; };
-		8A9674751FA7CD5E00A278EA /* Promise+Retry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9674481FA7CD5E00A278EA /* Promise+Retry.swift */; };
-		8A9674761FA7CD5E00A278EA /* Promise+State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9674491FA7CD5E00A278EA /* Promise+State.swift */; };
-		8A9674771FA7CD5E00A278EA /* Promise+Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96744A1FA7CD5E00A278EA /* Promise+Then.swift */; };
-		8A9674781FA7CD5E00A278EA /* Promise+Timeout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96744B1FA7CD5E00A278EA /* Promise+Timeout.swift */; };
-		8A9674791FA7CD5E00A278EA /* Promise+Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96744C1FA7CD5E00A278EA /* Promise+Validate.swift */; };
-		8A96747A1FA7CD5E00A278EA /* Promise+Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96744D1FA7CD5E00A278EA /* Promise+Zip.swift */; };
-		8A96747B1FA7CD5E00A278EA /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A96744E1FA7CD5E00A278EA /* Promise.swift */; };
 		8AFB87791FA8BE8C00495264 /* OrderEntryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB87781FA8BE8C00495264 /* OrderEntryError.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,28 +31,6 @@
 		8A058EBD1FA3DBD300EE27B5 /* EditOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditOrderViewController.swift; sourceTree = "<group>"; };
 		8A058EBF1FA401E100EE27B5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		8A058EC11FA4027F00EE27B5 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
-		8A9674391FA7CD5E00A278EA /* Commons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
-		8A96743A1FA7CD5E00A278EA /* Context.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Context.swift; sourceTree = "<group>"; };
-		8A96743B1FA7CD5E00A278EA /* Promise+All.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+All.swift"; sourceTree = "<group>"; };
-		8A96743C1FA7CD5E00A278EA /* Promise+Always.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Always.swift"; sourceTree = "<group>"; };
-		8A96743D1FA7CD5E00A278EA /* Promise+Any.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Any.swift"; sourceTree = "<group>"; };
-		8A96743E1FA7CD5E00A278EA /* Promise+Async.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Async.swift"; sourceTree = "<group>"; };
-		8A96743F1FA7CD5E00A278EA /* Promise+Await.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Await.swift"; sourceTree = "<group>"; };
-		8A9674401FA7CD5E00A278EA /* Promise+Cancel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Cancel.swift"; sourceTree = "<group>"; };
-		8A9674411FA7CD5E00A278EA /* Promise+Catch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Catch.swift"; sourceTree = "<group>"; };
-		8A9674421FA7CD5E00A278EA /* Promise+Defer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Defer.swift"; sourceTree = "<group>"; };
-		8A9674431FA7CD5E00A278EA /* Promise+Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Map.swift"; sourceTree = "<group>"; };
-		8A9674441FA7CD5E00A278EA /* Promise+Observer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Observer.swift"; sourceTree = "<group>"; };
-		8A9674451FA7CD5E00A278EA /* Promise+Pass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Pass.swift"; sourceTree = "<group>"; };
-		8A9674461FA7CD5E00A278EA /* Promise+Recover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Recover.swift"; sourceTree = "<group>"; };
-		8A9674471FA7CD5E00A278EA /* Promise+Reduce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Reduce.swift"; sourceTree = "<group>"; };
-		8A9674481FA7CD5E00A278EA /* Promise+Retry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Retry.swift"; sourceTree = "<group>"; };
-		8A9674491FA7CD5E00A278EA /* Promise+State.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+State.swift"; sourceTree = "<group>"; };
-		8A96744A1FA7CD5E00A278EA /* Promise+Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Then.swift"; sourceTree = "<group>"; };
-		8A96744B1FA7CD5E00A278EA /* Promise+Timeout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Timeout.swift"; sourceTree = "<group>"; };
-		8A96744C1FA7CD5E00A278EA /* Promise+Validate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Validate.swift"; sourceTree = "<group>"; };
-		8A96744D1FA7CD5E00A278EA /* Promise+Zip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Promise+Zip.swift"; sourceTree = "<group>"; };
-		8A96744E1FA7CD5E00A278EA /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 		8AFB87781FA8BE8C00495264 /* OrderEntryError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderEntryError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,7 +48,6 @@
 		8A058E991FA3C48800EE27B5 = {
 			isa = PBXGroup;
 			children = (
-				8A96741C1FA7CD5E00A278EA /* Hydra-1.0.1 */,
 				8A058EA41FA3C48800EE27B5 /* OrderEntry */,
 				8A058EA31FA3C48800EE27B5 /* Products */,
 			);
@@ -122,51 +77,6 @@
 				8AFB87781FA8BE8C00495264 /* OrderEntryError.swift */,
 			);
 			path = OrderEntry;
-			sourceTree = "<group>";
-		};
-		8A96741C1FA7CD5E00A278EA /* Hydra-1.0.1 */ = {
-			isa = PBXGroup;
-			children = (
-				8A9674371FA7CD5E00A278EA /* Sources */,
-			);
-			path = "Hydra-1.0.1";
-			sourceTree = "<group>";
-		};
-		8A9674371FA7CD5E00A278EA /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				8A9674381FA7CD5E00A278EA /* Hydra */,
-			);
-			path = Sources;
-			sourceTree = "<group>";
-		};
-		8A9674381FA7CD5E00A278EA /* Hydra */ = {
-			isa = PBXGroup;
-			children = (
-				8A9674391FA7CD5E00A278EA /* Commons.swift */,
-				8A96743A1FA7CD5E00A278EA /* Context.swift */,
-				8A96743B1FA7CD5E00A278EA /* Promise+All.swift */,
-				8A96743C1FA7CD5E00A278EA /* Promise+Always.swift */,
-				8A96743D1FA7CD5E00A278EA /* Promise+Any.swift */,
-				8A96743E1FA7CD5E00A278EA /* Promise+Async.swift */,
-				8A96743F1FA7CD5E00A278EA /* Promise+Await.swift */,
-				8A9674401FA7CD5E00A278EA /* Promise+Cancel.swift */,
-				8A9674411FA7CD5E00A278EA /* Promise+Catch.swift */,
-				8A9674421FA7CD5E00A278EA /* Promise+Defer.swift */,
-				8A9674431FA7CD5E00A278EA /* Promise+Map.swift */,
-				8A9674441FA7CD5E00A278EA /* Promise+Observer.swift */,
-				8A9674451FA7CD5E00A278EA /* Promise+Pass.swift */,
-				8A9674461FA7CD5E00A278EA /* Promise+Recover.swift */,
-				8A9674471FA7CD5E00A278EA /* Promise+Reduce.swift */,
-				8A9674481FA7CD5E00A278EA /* Promise+Retry.swift */,
-				8A9674491FA7CD5E00A278EA /* Promise+State.swift */,
-				8A96744A1FA7CD5E00A278EA /* Promise+Then.swift */,
-				8A96744B1FA7CD5E00A278EA /* Promise+Timeout.swift */,
-				8A96744C1FA7CD5E00A278EA /* Promise+Validate.swift */,
-				8A96744D1FA7CD5E00A278EA /* Promise+Zip.swift */,
-				8A96744E1FA7CD5E00A278EA /* Promise.swift */,
-			);
-			path = Hydra;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,33 +154,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				8AFB87791FA8BE8C00495264 /* OrderEntryError.swift in Sources */,
-				8A9674701FA7CD5E00A278EA /* Promise+Map.swift in Sources */,
-				8A9674781FA7CD5E00A278EA /* Promise+Timeout.swift in Sources */,
 				8A058EB81FA3CF8200EE27B5 /* LoginViewController.swift in Sources */,
 				8A058EBC1FA3DAAE00EE27B5 /* RecentOrdersViewController.swift in Sources */,
-				8A96746E1FA7CD5E00A278EA /* Promise+Catch.swift in Sources */,
-				8A9674671FA7CD5E00A278EA /* Context.swift in Sources */,
-				8A9674721FA7CD5E00A278EA /* Promise+Pass.swift in Sources */,
-				8A96747B1FA7CD5E00A278EA /* Promise.swift in Sources */,
-				8A9674791FA7CD5E00A278EA /* Promise+Validate.swift in Sources */,
-				8A96747A1FA7CD5E00A278EA /* Promise+Zip.swift in Sources */,
-				8A96746B1FA7CD5E00A278EA /* Promise+Async.swift in Sources */,
-				8A96746D1FA7CD5E00A278EA /* Promise+Cancel.swift in Sources */,
-				8A9674771FA7CD5E00A278EA /* Promise+Then.swift in Sources */,
-				8A9674761FA7CD5E00A278EA /* Promise+State.swift in Sources */,
-				8A9674741FA7CD5E00A278EA /* Promise+Reduce.swift in Sources */,
-				8A9674691FA7CD5E00A278EA /* Promise+Always.swift in Sources */,
-				8A9674661FA7CD5E00A278EA /* Commons.swift in Sources */,
 				8A058EC21FA4027F00EE27B5 /* Helper.swift in Sources */,
-				8A9674731FA7CD5E00A278EA /* Promise+Recover.swift in Sources */,
-				8A96746F1FA7CD5E00A278EA /* Promise+Defer.swift in Sources */,
 				8A058EBE1FA3DBD300EE27B5 /* EditOrderViewController.swift in Sources */,
 				8A058EA61FA3C48800EE27B5 /* AppDelegate.swift in Sources */,
-				8A96746C1FA7CD5E00A278EA /* Promise+Await.swift in Sources */,
-				8A9674751FA7CD5E00A278EA /* Promise+Retry.swift in Sources */,
-				8A96746A1FA7CD5E00A278EA /* Promise+Any.swift in Sources */,
-				8A9674681FA7CD5E00A278EA /* Promise+All.swift in Sources */,
-				8A9674711FA7CD5E00A278EA /* Promise+Observer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
