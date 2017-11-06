@@ -63,7 +63,6 @@ class Helper {
         var err: OrderEntryError? = nil
         
         queue.async {
-            Thread.sleep(forTimeInterval: 2)
             // create the task to make the web service call asynchronously
             session.dataTask(with: request) { (data, response, error) in
                 if let response = response {

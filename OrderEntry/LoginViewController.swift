@@ -37,55 +37,52 @@ class LoginViewController: UIViewController {
     */
 
     @IBAction func loginOnPress(_ sender: Any) {
-                
+        
+        // validate input
         do {
-            Helper.showPleaseWaitOverlay(parentController: self, waitMessage: "Logging in...") {
-                do {
-                    try Helper.checkForNilOrEmpty(forField: "login ID", fieldValue: self.loginID.text)
-                    try Helper.checkForNilOrEmpty(forField: "password", fieldValue: self.password.text)
+            try Helper.checkForNilOrEmpty(forField: "login ID", fieldValue: self.loginID.text)
+            try Helper.checkForNilOrEmpty(forField: "password", fieldValue: self.password.text)
+        } catch (OrderEntryError.inputValueError(let msg)) {
+            Helper.showError(parentController: self, errorMessage: msg, title: "Invalid Input")
+            return
+        } catch {
+            Helper.showError(parentController: self, errorMessage: "Unexpected Error = \(error)")
+            return
+        }
+            
+        Helper.showPleaseWaitOverlay(parentController: self, waitMessage: "Logging in...") {
+            do {
+                
+                let loginResult = try AuthApi.login(withUsername: self.loginID.text!, andPassword: self.password.text!)
+                
+                Helper.hidePleaseWaitOverlay() {
                     
-                    
-                    let baseUrl:String = (try Helper.getConfigValue(forKey: "restApi.baseUrl", isRequired: true))!
-                    
-                    let parameters = ["username": self.loginID.text!.trim(), "password": self.password.text!.trim()]
-                    guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
-                        throw OrderEntryError.webServiceError(msg: "Unable to serialize parameters to JSON")
+                    let dict = loginResult as! [String: Any]
+                    print("final result = \(dict)")
+                    if (dict["result"] as! String == "successful login") {
+                        // login was successful, so go to main login screen
+                        self.performSegue(withIdentifier: "goToMainScreen", sender: self)
+                    } else {
+                        // login failed, show the error
+                        Helper.showError(parentController: self, errorMessage: dict["result"] as! String,
+                                         title: "Login Failed")
                     }
-
-                    let loginUrl = "\(baseUrl)/auth/login"
-                    let loginResult = try Helper.callWebService(withUrl: loginUrl, httpMethod: "POST", httpBody: httpBody)
-                    
-                    print(loginResult!)
-
-                    Helper.hidePleaseWaitOverlay() {
-                        
-                        let dict = loginResult as! [String: Any]
-                        print("final result = \(dict)")
-                        if (dict["result"] as! String == "successful login") {
-                            // login was successful, so go to main login screen
-                            self.performSegue(withIdentifier: "goToMainScreen", sender: self)
-                        } else {
-                            // login failed, show the error
-                            Helper.showError(parentController: self, errorMessage: dict["result"] as! String,
-                                             title: "Login Failed")
-                        }
-                    }
-                } catch OrderEntryError.webServiceError(let msg) {
-                    Helper.hidePleaseWaitOverlay() {
-                        Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
-                    }
-                } catch (OrderEntryError.configurationError(let msg)) {
-                    Helper.hidePleaseWaitOverlay() {
-                        Helper.showError(parentController: self, errorMessage: msg, title: "Configuration Error")
-                    }
-                } catch (OrderEntryError.inputValueError(let msg)) {
-                    Helper.hidePleaseWaitOverlay() {
-                        Helper.showError(parentController: self, errorMessage: msg, title: "Invalid Input")
-                    }
-                } catch {
-                    Helper.hidePleaseWaitOverlay() {
-                        Helper.showError(parentController: self, errorMessage: "Unexpected Error = \(error)");
-                    }
+                }
+            } catch OrderEntryError.webServiceError(let msg) {
+                Helper.hidePleaseWaitOverlay() {
+                    Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
+                }
+            } catch (OrderEntryError.configurationError(let msg)) {
+                Helper.hidePleaseWaitOverlay() {
+                    Helper.showError(parentController: self, errorMessage: msg, title: "Configuration Error")
+                }
+            } catch (OrderEntryError.inputValueError(let msg)) {
+                Helper.hidePleaseWaitOverlay() {
+                    Helper.showError(parentController: self, errorMessage: msg, title: "Invalid Input")
+                }
+            } catch {
+                Helper.hidePleaseWaitOverlay() {
+                    Helper.showError(parentController: self, errorMessage: "Unexpected Error = \(error)");
                 }
             }
         }
