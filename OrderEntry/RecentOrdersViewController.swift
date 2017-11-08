@@ -8,8 +8,23 @@
 
 import UIKit
 
-class RecentOrdersViewController: UITableViewController {
 
+class OrderTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var cellView: UIView!
+    @IBOutlet weak var lblOrderID: UILabel!
+    @IBOutlet weak var lblNumItems: UILabel!
+    @IBOutlet weak var lblLastUpdate: UILabel!
+}
+
+class RecentOrdersViewController: UITableViewController {
+    
+    @IBOutlet var ordersTableView: UITableView!
+    
+    let cellTableIdentifier = "CellTableIdentifier"
+    
+    var orders: [Any]? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -18,6 +33,47 @@ class RecentOrdersViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        ordersTableView.separatorColor = UIColor.white
+        ordersTableView.separatorInset = .zero
+        ordersTableView.layoutMargins = .zero
+        
+        // this step is done to remove the empty cells from end of table view
+        ordersTableView.tableFooterView = UIView()
+    }
+    
+    func cellViewTapped(_ sender:UITapGestureRecognizer) {
+        let indexPath = NSIndexPath(row: (sender.view?.tag)!, section: 0)
+        //Helper.showMessage(parentController: self, message: "inside cellViewTapped, tag = \((sender.view?.tag)!)")
+        if let cell = ordersTableView.cellForRow(at: indexPath as IndexPath) as? OrderTableViewCell {
+            print("Cell \(cell) has been tapped.")
+        }
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+     
+        do {
+            
+            let ordersResult = try OrdersApi.getOrders(forUserId: Helper.userId)
+            self.orders = ordersResult as? [Any]
+            print("final result = \(String(describing: self.orders))")
+            self.ordersTableView.reloadData()
+            
+        } catch OrderEntryError.webServiceError(let msg) {
+            Helper.hidePleaseWaitOverlay() {
+                Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
+            }
+        } catch (OrderEntryError.configurationError(let msg)) {
+            Helper.hidePleaseWaitOverlay() {
+                Helper.showError(parentController: self, errorMessage: msg, title: "Configuration Error")
+            }
+        } catch {
+            Helper.hidePleaseWaitOverlay() {
+                Helper.showError(parentController: self, errorMessage: "Unexpected Error = \(error)");
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,24 +85,34 @@ class RecentOrdersViewController: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
+        if let orders = orders {
+            return orders.count
+        }
         return 0
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellTableIdentifier, for: indexPath)
+            as! OrderTableViewCell
+        let rowData = orders?[indexPath.row] as? [String: Any]
+        let id = rowData?["id"] as! Int64
+        cell.lblOrderID.text = "Order: " + String(describing: id)
+        let lineItems = rowData?["lineItems"] as! [Any]
+        cell.lblNumItems.text = "(" + String(describing: lineItems.count) + " items)"
+        cell.cellView.layer.cornerRadius = 10
+        cell.contentView.tag = indexPath.row
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector (self.cellViewTapped(_:)))
+        cell.contentView.addGestureRecognizer(gesture)
+        
         return cell
     }
-    */
-
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

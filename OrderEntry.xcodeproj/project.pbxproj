@@ -18,6 +18,8 @@
 		8A058EC21FA4027F00EE27B5 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A058EC11FA4027F00EE27B5 /* Helper.swift */; };
 		8A5D3B201FB0F69B00485829 /* ApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D3B1E1FB0F69B00485829 /* ApiHelper.swift */; };
 		8A5D3B211FB0F69B00485829 /* AuthApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D3B1F1FB0F69B00485829 /* AuthApi.swift */; };
+		8A5D3B241FB1082400485829 /* OrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A5D3B231FB1082400485829 /* OrderCell.xib */; };
+		8A5D3B261FB10BB900485829 /* OrdersApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D3B251FB10BB900485829 /* OrdersApi.swift */; };
 		8AFB87791FA8BE8C00495264 /* OrderEntryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB87781FA8BE8C00495264 /* OrderEntryError.swift */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +37,8 @@
 		8A058EC11FA4027F00EE27B5 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		8A5D3B1E1FB0F69B00485829 /* ApiHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiHelper.swift; sourceTree = "<group>"; };
 		8A5D3B1F1FB0F69B00485829 /* AuthApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthApi.swift; sourceTree = "<group>"; };
+		8A5D3B231FB1082400485829 /* OrderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderCell.xib; sourceTree = "<group>"; };
+		8A5D3B251FB10BB900485829 /* OrdersApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrdersApi.swift; sourceTree = "<group>"; };
 		8AFB87781FA8BE8C00495264 /* OrderEntryError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderEntryError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,6 +84,7 @@
 				8A058EBF1FA401E100EE27B5 /* Config.plist */,
 				8A058EC11FA4027F00EE27B5 /* Helper.swift */,
 				8AFB87781FA8BE8C00495264 /* OrderEntryError.swift */,
+				8A5D3B231FB1082400485829 /* OrderCell.xib */,
 			);
 			path = OrderEntry;
 			sourceTree = "<group>";
@@ -87,6 +92,7 @@
 		8A5D3B221FB0F6C500485829 /* api */ = {
 			isa = PBXGroup;
 			children = (
+				8A5D3B251FB10BB900485829 /* OrdersApi.swift */,
 				8A5D3B1E1FB0F69B00485829 /* ApiHelper.swift */,
 				8A5D3B1F1FB0F69B00485829 /* AuthApi.swift */,
 			);
@@ -153,6 +159,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A5D3B241FB1082400485829 /* OrderCell.xib in Resources */,
 				8A058EB01FA3C48800EE27B5 /* LaunchScreen.storyboard in Resources */,
 				8A058EAD1FA3C48800EE27B5 /* Assets.xcassets in Resources */,
 				8A058EC01FA401E100EE27B5 /* Config.plist in Resources */,
@@ -167,6 +174,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A5D3B261FB10BB900485829 /* OrdersApi.swift in Sources */,
 				8AFB87791FA8BE8C00495264 /* OrderEntryError.swift in Sources */,
 				8A058EB81FA3CF8200EE27B5 /* LoginViewController.swift in Sources */,
 				8A058EBC1FA3DAAE00EE27B5 /* RecentOrdersViewController.swift in Sources */,

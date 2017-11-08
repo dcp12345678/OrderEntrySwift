@@ -60,8 +60,10 @@ class LoginViewController: UIViewController {
                     let dict = loginResult as! [String: Any]
                     print("final result = \(dict)")
                     if (dict["result"] as! String == "successful login") {
-                        // login was successful, so go to main login screen
-                        self.performSegue(withIdentifier: "goToMainScreen", sender: self)
+                        // login was successful, so store userId for logged in user and then
+                        // go to recent orders screen
+                        Helper.userId = dict["userId"] as! Int64
+                        self.performSegue(withIdentifier: "goToRecentOrdersScreen", sender: self)
                     } else {
                         // login failed, show the error
                         Helper.showError(parentController: self, errorMessage: dict["result"] as! String,

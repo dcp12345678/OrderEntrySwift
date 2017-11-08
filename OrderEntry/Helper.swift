@@ -18,7 +18,9 @@ extension String {
 
 class Helper {
     
-    static var pleaseWaitController: UIViewController?
+    static var userId: Int64 = -1
+    
+    private static var pleaseWaitController: UIViewController?
     
     static func getConfigValue<T>(forKey key: String, isRequired: Bool) throws -> T? {
         guard let path = Bundle.main.path(forResource: "Config", ofType: "plist") else {
@@ -39,7 +41,7 @@ class Helper {
     }
     
     
-    static func callWebService(withUrl url: String, httpMethod: String, httpBody: Data?) throws -> Any? {
+    static func callWebService(withUrl url: String, httpMethod: String, httpBody: Data? = nil) throws -> Any? {
         // make sure URL is valid
         guard let webServiceUrl = URL(string: url) else {
             throw OrderEntryError.urlError(url: url)
@@ -103,6 +105,16 @@ class Helper {
         let cancelAction = UIAlertAction(title: "OK",
                                          style: .cancel, handler: nil)
         controller.addAction(cancelAction)
+        parentController.present(controller, animated: true, completion: nil)
+    }
+
+    static func showMessage(parentController: UIViewController, message: String, title: String = "Info") {
+        let controller = UIAlertController(
+            title: title,
+            message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK",
+                                         style: .default, handler: nil)
+        controller.addAction(okAction)
         parentController.present(controller, animated: true, completion: nil)
     }
     
