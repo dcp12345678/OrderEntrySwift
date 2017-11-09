@@ -11,7 +11,8 @@ import UIKit
 
 class OrderTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var cellView: UIView!
+    @IBOutlet weak var mainDetailView: UIView!
+    @IBOutlet weak var expandedDetailView: UIView!
     @IBOutlet weak var lblOrderID: UILabel!
     @IBOutlet weak var lblNumItems: UILabel!
     @IBOutlet weak var lblLastUpdate: UILabel!
@@ -104,7 +105,7 @@ class RecentOrdersViewController: UITableViewController {
         cell.lblOrderID.text = "Order: " + String(describing: id)
         let lineItems = rowData?["lineItems"] as! [Any]
         cell.lblNumItems.text = "(" + String(describing: lineItems.count) + " items)"
-        cell.cellView.layer.cornerRadius = 10
+        cell.mainDetailView.layer.cornerRadius = 10
         cell.contentView.tag = indexPath.row
         
         let gesture = UITapGestureRecognizer(target: self, action: #selector (self.cellViewTapped(_:)))
