@@ -10,19 +10,68 @@ import UIKit
 
 
 class OrderTableViewCell: UITableViewCell {
-    
-    @IBOutlet weak var mainDetailView: UIView!
-    @IBOutlet weak var expandedDetailView: UIView!
+    @IBOutlet weak var rootStackView: UIStackView!    
     @IBOutlet weak var lblOrderID: UILabel!
     @IBOutlet weak var lblNumItems: UILabel!
     @IBOutlet weak var lblLastUpdate: UILabel!
+    @IBOutlet weak var detailStackView: UIStackView!
+    var isExpanded: Bool = false
+    @IBOutlet weak var productListTable: ProductListTable!
+}
+
+class ProductInfo {
+    var name: String = ""
+    var count: Int = -1
+    
+    init(name: String, count: Int) {
+        self.name = name
+        self.count = count
+    }
+}
+
+let productInfoArray = [ ProductInfo(name: "Car", count: 3),
+                         ProductInfo(name: "Truck", count: 3),
+                         ProductInfo(name: "Motorcycle", count: 2)]
+
+
+class ProductInfoTableViewCell: UITableViewCell {
+    @IBOutlet weak var productNameLabel: UILabel!
+    @IBOutlet weak var productCountLabel: UILabel!
+}
+
+class ProductListTable: UITableView, UITableViewDataSource, UITableViewDelegate {
+    
+    let productInfoIdentifier = "ProductInfo"
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: productInfoIdentifier, for: indexPath)
+            as! ProductInfoTableViewCell
+        
+        let row = indexPath.row
+        cell.productNameLabel?.text = productInfoArray[row].name
+        cell.productCountLabel?.text = String(describing: productInfoArray[row].count)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return productInfoArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let row = indexPath.row
+        print(productInfoArray[row])
+    }
 }
 
 class RecentOrdersViewController: UITableViewController {
     
     @IBOutlet var ordersTableView: UITableView!
     
-    let cellTableIdentifier = "CellTableIdentifier"
+    let mainViewIdentifier = "MainView"
+    let expandedView = "ExpandedView"
     
     var orders: [Any]? = nil
     
@@ -41,6 +90,9 @@ class RecentOrdersViewController: UITableViewController {
         
         // this step is done to remove the empty cells from end of table view
         ordersTableView.tableFooterView = UIView()
+        
+        ordersTableView.rowHeight = UITableViewAutomaticDimension
+        ordersTableView.estimatedRowHeight = 120
     }
     
     func cellViewTapped(_ sender:UITapGestureRecognizer) {
@@ -48,8 +100,33 @@ class RecentOrdersViewController: UITableViewController {
         //Helper.showMessage(parentController: self, message: "inside cellViewTapped, tag = \((sender.view?.tag)!)")
         if let cell = ordersTableView.cellForRow(at: indexPath as IndexPath) as? OrderTableViewCell {
             print("Cell \(cell) has been tapped.")
+            
+            if !cell.isExpanded {
+                // we need to expand the cell
+                let rowData = orders?[indexPath.row] as? [String: Any]
+                let id = rowData?["id"] as! Int64
+                
+                UIView.animate(withDuration: 0.2) {
+                    cell.detailStackView.isHidden = false;
+                }
+                
+                
+                //var view = SideBySideLabels.instanceFromNib()
+                //cell.itemsStackView.addArrangedSubview(view)
+                //label.pin(to: cell.itemsStackView)
+                
+                //view = SideBySideLabels.instanceFromNib()
+                //cell.itemsStackView.addArrangedSubview(view)
+                //label.pin(to: cell.itemsStackView)
+                
+            } else {
+                cell.detailStackView.isHidden = true;
+            }
+            
+            cell.isExpanded = !cell.isExpanded
+            ordersTableView.beginUpdates()
+            ordersTableView.endUpdates()
         }
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -98,20 +175,43 @@ class RecentOrdersViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellTableIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: mainViewIdentifier, for: indexPath)
             as! OrderTableViewCell
         let rowData = orders?[indexPath.row] as? [String: Any]
         let id = rowData?["id"] as! Int64
         cell.lblOrderID.text = "Order: " + String(describing: id)
         let lineItems = rowData?["lineItems"] as! [Any]
         cell.lblNumItems.text = "(" + String(describing: lineItems.count) + " items)"
-        cell.mainDetailView.layer.cornerRadius = 10
+        //cell.mainDetailView.layer.cornerRadius = 10
         cell.contentView.tag = indexPath.row
         
         let gesture = UITapGestureRecognizer(target: self, action: #selector (self.cellViewTapped(_:)))
         cell.contentView.addGestureRecognizer(gesture)
+        //cell.mainView.layer.cornerRadius = 10
+        
+        let backgroundView: UIView = {
+            let view = UIView()
+            let color = UIColor(red: 82.0 / 255.0, green: 130.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)
+            view.backgroundColor = color
+            view.layer.cornerRadius = 10.0
+            return view
+        }()
+        
+        pinBackground(backgroundView, to: cell.rootStackView)
+        if !cell.isExpanded {
+            cell.detailStackView.isHidden = true
+        }
         
         return cell
+    }
+    
+    @IBAction func onBtnEditTapped(_ sender: Any) {
+    }
+    
+    private func pinBackground(_ view: UIView, to stackView: UIStackView) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        stackView.insertSubview(view, at: 0)
+        view.pin(to: stackView)
     }
     
     /*

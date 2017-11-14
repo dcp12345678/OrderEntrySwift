@@ -10,9 +10,20 @@ import Foundation
 import UIKit
 
 
-extension String {
+public extension String {
     func trim() -> String {
         return self.trimmingCharacters(in: NSCharacterSet.whitespaces)
+    }
+}
+
+public extension UIView {
+    public func pin(to view: UIView) {
+        NSLayoutConstraint.activate([
+            leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: -8),
+            trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 8),
+            topAnchor.constraint(equalTo: view.topAnchor, constant: -8),
+            bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 8)
+        ])
     }
 }
 
