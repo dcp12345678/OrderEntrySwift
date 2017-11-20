@@ -14,9 +14,10 @@ class OrderTableViewCell: UITableViewCell {
     @IBOutlet weak var lblOrderID: UILabel!
     @IBOutlet weak var lblNumItems: UILabel!
     @IBOutlet weak var lblLastUpdate: UILabel!
-    @IBOutlet weak var detailStackView: UIStackView!
+    @IBOutlet weak var detailView: UIStackView!
     var isExpanded: Bool = false
     @IBOutlet weak var productListTable: ProductListTable!
+    @IBOutlet weak var productListTableHeight: NSLayoutConstraint!
 }
 
 class ProductInfo {
@@ -29,17 +30,13 @@ class ProductInfo {
     }
 }
 
-let productInfoArray = [ ProductInfo(name: "Car", count: 3),
-                         ProductInfo(name: "Truck", count: 3),
-                         ProductInfo(name: "Motorcycle", count: 2)]
-
-
 class ProductInfoTableViewCell: UITableViewCell {
     @IBOutlet weak var productNameLabel: UILabel!
     @IBOutlet weak var productCountLabel: UILabel!
 }
 
 class ProductListTable: UITableView, UITableViewDataSource, UITableViewDelegate {
+    var productInfoArray = [ProductInfo]()
     
     let productInfoIdentifier = "ProductInfo"
     
@@ -51,11 +48,19 @@ class ProductListTable: UITableView, UITableViewDataSource, UITableViewDelegate 
         cell.productNameLabel?.text = productInfoArray[row].name
         cell.productCountLabel?.text = String(describing: productInfoArray[row].count)
         
+        let color = UIColor(red: 82.0 / 255.0, green: 130.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)
+        cell.backgroundColor = color
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return productInfoArray.count
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
+        return 1
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -103,29 +108,53 @@ class RecentOrdersViewController: UITableViewController {
             
             if !cell.isExpanded {
                 // we need to expand the cell
+                
                 let rowData = orders?[indexPath.row] as? [String: Any]
                 let id = rowData?["id"] as! Int64
-                
-                UIView.animate(withDuration: 0.2) {
-                    cell.detailStackView.isHidden = false;
+                do {
+                    let lineItems = try OrdersApi.getOrderLineItems(forOrderID: id)
+                    
+                    var productTypeCounts = [String: Int]()
+                    for lineItem in lineItems {
+                        let productTypeName = lineItem["productTypeName"] as! String
+                        productTypeCounts[productTypeName] = (productTypeCounts[productTypeName] ?? 0) + 1
+                    }
+                    
+                    cell.productListTable.productInfoArray.removeAll()
+                    for productTypeCount in productTypeCounts {
+                        cell.productListTable.productInfoArray.append(ProductInfo(name: productTypeCount.key, count: productTypeCount.value))
+                    }
+                    
+                    // recalculate the product list table height based on number of rows in productInfoArray
+                    cell.productListTableHeight.constant = CGFloat(cell.productListTable.productInfoArray.count) * 40.0
+                    
+                } catch OrderEntryError.webServiceError(let msg) {
+                    Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
+                } catch (OrderEntryError.configurationError(let msg)) {
+                    Helper.showError(parentController: self, errorMessage: msg, title: "Configuration Error")
+                } catch {
+                    Helper.showError(parentController: self, errorMessage: "Unexpected Error = \(error)");
                 }
                 
+                cell.productListTable.layer.borderColor = UIColor.white.cgColor
+                cell.productListTable.layer.borderWidth = 1.0
+                cell.productListTable.separatorInset = UIEdgeInsets.zero // don't inset the cell separator
                 
-                //var view = SideBySideLabels.instanceFromNib()
-                //cell.itemsStackView.addArrangedSubview(view)
-                //label.pin(to: cell.itemsStackView)
+                UIView.animate(withDuration: 0.2) {
+                    cell.detailView.isHidden = false;
+                }
                 
-                //view = SideBySideLabels.instanceFromNib()
-                //cell.itemsStackView.addArrangedSubview(view)
-                //label.pin(to: cell.itemsStackView)
-                
+                cell.productListTable.reloadData()
             } else {
-                cell.detailStackView.isHidden = true;
+                cell.detailView.isHidden = true;
             }
             
             cell.isExpanded = !cell.isExpanded
             ordersTableView.beginUpdates()
             ordersTableView.endUpdates()
+            
+            // scroll to the row the user tapped
+            tableView.scrollToRow(at: indexPath as IndexPath, at: UITableViewScrollPosition.middle, animated: true)
         }
     }
     
@@ -133,12 +162,10 @@ class RecentOrdersViewController: UITableViewController {
         super.viewWillAppear(animated)
      
         do {
-            
-            let ordersResult = try OrdersApi.getOrders(forUserId: Helper.userId)
+            let ordersResult = try OrdersApi.getOrders(forUserID: Helper.userID)
             self.orders = ordersResult as? [Any]
             print("final result = \(String(describing: self.orders))")
             self.ordersTableView.reloadData()
-            
         } catch OrderEntryError.webServiceError(let msg) {
             Helper.hidePleaseWaitOverlay() {
                 Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
@@ -182,12 +209,10 @@ class RecentOrdersViewController: UITableViewController {
         cell.lblOrderID.text = "Order: " + String(describing: id)
         let lineItems = rowData?["lineItems"] as! [Any]
         cell.lblNumItems.text = "(" + String(describing: lineItems.count) + " items)"
-        //cell.mainDetailView.layer.cornerRadius = 10
         cell.contentView.tag = indexPath.row
         
         let gesture = UITapGestureRecognizer(target: self, action: #selector (self.cellViewTapped(_:)))
         cell.contentView.addGestureRecognizer(gesture)
-        //cell.mainView.layer.cornerRadius = 10
         
         let backgroundView: UIView = {
             let view = UIView()
@@ -196,16 +221,23 @@ class RecentOrdersViewController: UITableViewController {
             view.layer.cornerRadius = 10.0
             return view
         }()
-        
         pinBackground(backgroundView, to: cell.rootStackView)
+        
         if !cell.isExpanded {
-            cell.detailStackView.isHidden = true
+            cell.detailView.isHidden = true
         }
         
+        cell.productListTable.dataSource = cell.productListTable
+        cell.productListTable.delegate = cell.productListTable
+        
+        // this step is done to remove the empty cells from end of table view
+        cell.productListTable.tableFooterView = UIView()
+
         return cell
     }
     
     @IBAction func onBtnEditTapped(_ sender: Any) {
+        let x = "hey"
     }
     
     private func pinBackground(_ view: UIView, to stackView: UIStackView) {

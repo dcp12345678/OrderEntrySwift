@@ -16,6 +16,7 @@
 		8A058EBE1FA3DBD300EE27B5 /* EditOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A058EBD1FA3DBD300EE27B5 /* EditOrderViewController.swift */; };
 		8A058EC01FA401E100EE27B5 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A058EBF1FA401E100EE27B5 /* Config.plist */; };
 		8A058EC21FA4027F00EE27B5 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A058EC11FA4027F00EE27B5 /* Helper.swift */; };
+		8A4175C41FBF420E00FD682C /* LookupApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4175C31FBF420E00FD682C /* LookupApi.swift */; };
 		8A5D3B201FB0F69B00485829 /* ApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D3B1E1FB0F69B00485829 /* ApiHelper.swift */; };
 		8A5D3B211FB0F69B00485829 /* AuthApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D3B1F1FB0F69B00485829 /* AuthApi.swift */; };
 		8A5D3B241FB1082400485829 /* OrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A5D3B231FB1082400485829 /* OrderCell.xib */; };
@@ -35,6 +36,7 @@
 		8A058EBD1FA3DBD300EE27B5 /* EditOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditOrderViewController.swift; sourceTree = "<group>"; };
 		8A058EBF1FA401E100EE27B5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		8A058EC11FA4027F00EE27B5 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		8A4175C31FBF420E00FD682C /* LookupApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookupApi.swift; sourceTree = "<group>"; };
 		8A5D3B1E1FB0F69B00485829 /* ApiHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiHelper.swift; sourceTree = "<group>"; };
 		8A5D3B1F1FB0F69B00485829 /* AuthApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthApi.swift; sourceTree = "<group>"; };
 		8A5D3B231FB1082400485829 /* OrderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderCell.xib; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 				8A5D3B251FB10BB900485829 /* OrdersApi.swift */,
 				8A5D3B1E1FB0F69B00485829 /* ApiHelper.swift */,
 				8A5D3B1F1FB0F69B00485829 /* AuthApi.swift */,
+				8A4175C31FBF420E00FD682C /* LookupApi.swift */,
 			);
 			name = api;
 			sourceTree = "<group>";
@@ -174,6 +177,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A4175C41FBF420E00FD682C /* LookupApi.swift in Sources */,
 				8A5D3B261FB10BB900485829 /* OrdersApi.swift in Sources */,
 				8AFB87791FA8BE8C00495264 /* OrderEntryError.swift in Sources */,
 				8A058EB81FA3CF8200EE27B5 /* LoginViewController.swift in Sources */,

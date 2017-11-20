@@ -62,7 +62,7 @@ class LoginViewController: UIViewController {
                     if (dict["result"] as! String == "successful login") {
                         // login was successful, so store userId for logged in user and then
                         // go to recent orders screen
-                        Helper.userId = dict["userId"] as! Int64
+                        Helper.userID = dict["userId"] as! Int64
                         self.performSegue(withIdentifier: "goToRecentOrdersScreen", sender: self)
                     } else {
                         // login failed, show the error
