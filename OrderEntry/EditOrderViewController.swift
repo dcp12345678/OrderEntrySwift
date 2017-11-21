@@ -8,16 +8,41 @@
 
 import UIKit
 
+class LineItemTableViewCell: UITableViewCell {
+    @IBOutlet weak var lblProductName: UILabel!
+    @IBOutlet weak var imgProduct: UIImageView!
+    @IBOutlet weak var lblProductColor: UILabel!
+    @IBOutlet weak var lblProductType: UILabel!
+    @IBOutlet weak var lblLineItemID: UILabel!
+}
+
+
 class EditOrderViewController: UITableViewController {
 
+    @IBOutlet var tblLineItems: UITableView!
+    let lineItemCellIdentifier = "LineItem"
+    var orderID: Int64 = -1
+    var lineItems = [[String: Any]]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        self.title = "Edit Order (\(orderID))"
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        do {
+            lineItems = try OrdersApi.getOrderLineItems(forOrderID: self.orderID)
+            tblLineItems.reloadData()
+        } catch OrderEntryError.webServiceError(let msg) {
+            Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
+        } catch (OrderEntryError.configurationError(let msg)) {
+            Helper.showError(parentController: self, errorMessage: msg, title: "Configuration Error")
+        } catch {
+            Helper.showError(parentController: self, errorMessage: "Unexpected Error = \(error)");
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -28,24 +53,25 @@ class EditOrderViewController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return lineItems.count
     }
 
-    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: lineItemCellIdentifier, for: indexPath)
+            as! LineItemTableViewCell
 
         // Configure the cell...
-
+        let lineItem = lineItems[indexPath.row]
+        cell.lblProductName.text = lineItem["productName"] as? String
+        cell.lblProductColor.text = "Color: " + (lineItem["colorName"] as! String)
+        cell.lblProductType.text = "Type: " + (lineItem["productTypeName"] as! String)
+        cell.lblLineItemID.text = "Line Item ID: " + String(describing: (lineItem["id"] as! Int64))
         return cell
     }
-    */
 
     /*
     // Override to support conditional editing of the table view.

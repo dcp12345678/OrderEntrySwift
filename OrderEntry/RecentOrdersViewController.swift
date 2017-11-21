@@ -18,6 +18,7 @@ class OrderTableViewCell: UITableViewCell {
     var isExpanded: Bool = false
     @IBOutlet weak var productListTable: ProductListTable!
     @IBOutlet weak var productListTableHeight: NSLayoutConstraint!
+    @IBOutlet weak var btnEdit: UIButton!
 }
 
 class ProductInfo {
@@ -31,22 +32,22 @@ class ProductInfo {
 }
 
 class ProductInfoTableViewCell: UITableViewCell {
-    @IBOutlet weak var productNameLabel: UILabel!
-    @IBOutlet weak var productCountLabel: UILabel!
+    @IBOutlet weak var lblProductName: UILabel!
+    @IBOutlet weak var lblProductCount: UILabel!
 }
 
 class ProductListTable: UITableView, UITableViewDataSource, UITableViewDelegate {
     var productInfoArray = [ProductInfo]()
     
-    let productInfoIdentifier = "ProductInfo"
+    let productInfoCellIdentifier = "ProductInfo"
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: productInfoIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: productInfoCellIdentifier, for: indexPath)
             as! ProductInfoTableViewCell
         
         let row = indexPath.row
-        cell.productNameLabel?.text = productInfoArray[row].name
-        cell.productCountLabel?.text = String(describing: productInfoArray[row].count)
+        cell.lblProductName?.text = productInfoArray[row].name
+        cell.lblProductCount?.text = String(describing: productInfoArray[row].count)
         
         let color = UIColor(red: 82.0 / 255.0, green: 130.0 / 255.0, blue: 170.0 / 255.0, alpha: 1.0)
         cell.backgroundColor = color
@@ -75,7 +76,7 @@ class RecentOrdersViewController: UITableViewController {
     
     @IBOutlet var ordersTableView: UITableView!
     
-    let mainViewIdentifier = "MainView"
+    let mainViewCellIdentifier = "MainView"
     let expandedView = "ExpandedView"
     
     var orders: [Any]? = nil
@@ -100,7 +101,7 @@ class RecentOrdersViewController: UITableViewController {
         ordersTableView.estimatedRowHeight = 120
     }
     
-    func cellViewTapped(_ sender:UITapGestureRecognizer) {
+    @objc func cellViewTapped(_ sender: UITapGestureRecognizer) {
         let indexPath = NSIndexPath(row: (sender.view?.tag)!, section: 0)
         //Helper.showMessage(parentController: self, message: "inside cellViewTapped, tag = \((sender.view?.tag)!)")
         if let cell = ordersTableView.cellForRow(at: indexPath as IndexPath) as? OrderTableViewCell {
@@ -127,6 +128,10 @@ class RecentOrdersViewController: UITableViewController {
                     
                     // recalculate the product list table height based on number of rows in productInfoArray
                     cell.productListTableHeight.constant = CGFloat(cell.productListTable.productInfoArray.count) * 40.0
+                    
+                    // store the row index in the edit button's tag so we know which row they tapped
+                    // in the onBtnEditTapped method
+                    cell.btnEdit.tag = indexPath.row
                     
                 } catch OrderEntryError.webServiceError(let msg) {
                     Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
@@ -202,7 +207,7 @@ class RecentOrdersViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: mainViewIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: mainViewCellIdentifier, for: indexPath)
             as! OrderTableViewCell
         let rowData = orders?[indexPath.row] as? [String: Any]
         let id = rowData?["id"] as! Int64
@@ -234,10 +239,6 @@ class RecentOrdersViewController: UITableViewController {
         cell.productListTable.tableFooterView = UIView()
 
         return cell
-    }
-    
-    @IBAction func onBtnEditTapped(_ sender: Any) {
-        let x = "hey"
     }
     
     private func pinBackground(_ view: UIView, to stackView: UIStackView) {
@@ -281,14 +282,21 @@ class RecentOrdersViewController: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+
+        if segue.identifier == "editOrder" {
+            if let btn = sender as? UIButton {
+                let row = btn.tag
+                let rowData = orders?[row] as? [String: Any]
+                let id = rowData?["id"] as! Int64
+                (segue.destination as! EditOrderViewController).orderID = id
+            }
+        }
     }
-    */
 
 }
