@@ -17,15 +17,15 @@ class OrdersApi {
         return webServiceResult
     }
     
-    static func getOrderLineItems(forOrderID orderID: Int64) throws -> [[String: Any]] {
+    static func getOrderLineItems(forOrderID orderID: Int64) throws -> [NSMutableDictionary] {
         // call the web service and return the result
         let url = "\(try ApiHelper.getBaseUrl())/orderData/lineItems/\(orderID)"
         let webServiceResult = try Helper.callWebService(withUrl: url, httpMethod: "GET")
         //print("webServiceResult = \(webServiceResult)")
-        var ret = [[String: Any]]()
+        var ret = [NSMutableDictionary]()
         if let arr = webServiceResult as? [Any] {
             for case let elem as [String: Any] in arr {
-                var lineItem = [String: Any]()
+                let lineItem = NSMutableDictionary()
                 lineItem["id"] = elem["id"] as! Int64
                 lineItem["productID"] = elem["productId"] as! Int64
                 lineItem["productName"] = elem["productName"] as! String

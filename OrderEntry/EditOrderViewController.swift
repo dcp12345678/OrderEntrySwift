@@ -14,6 +14,22 @@ class LineItemTableViewCell: UITableViewCell {
     @IBOutlet weak var lblProductColor: UILabel!
     @IBOutlet weak var lblProductType: UILabel!
     @IBOutlet weak var lblLineItemID: UILabel!
+    @IBOutlet weak var btnSelect: UIButton!
+    public var lineItem = NSMutableDictionary()
+    
+    func setCellState(isSelected: Bool) {
+        lineItem["isSelected"] = isSelected
+        if (lineItem["isSelected"] as! Bool) == true {
+            btnSelect.setTitle(String.fontAwesomeIcon(name: .circle), for: .normal)
+        } else {
+            btnSelect.setTitle(String.fontAwesomeIcon(name: .circleO), for: .normal)
+        }
+    }
+    
+    @IBAction func onBtnSelectTapped(_ sender: Any) {
+        // toggle the selection state
+        setCellState(isSelected: !(lineItem["isSelected"] as! Bool))
+    }
 }
 
 class EditOrderViewController: UITableViewController {
@@ -21,7 +37,7 @@ class EditOrderViewController: UITableViewController {
     @IBOutlet var tblLineItems: UITableView!
     let lineItemCellIdentifier = "LineItem"
     var orderID: Int64 = -1
-    var lineItems = [[String: Any]]()
+    var lineItems = [NSMutableDictionary]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +49,14 @@ class EditOrderViewController: UITableViewController {
         super.viewDidAppear(animated)
         
         do {
+            tblLineItems.separatorColor = UIColor.white
+            tblLineItems.separatorInset = .zero
+            tblLineItems.layoutMargins = .zero
+
             lineItems = try OrdersApi.getOrderLineItems(forOrderID: self.orderID)
+            for lineItem in lineItems {
+                lineItem["isSelected"] = false
+            }
             tblLineItems.reloadData()
         } catch OrderEntryError.webServiceError(let msg) {
             Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
@@ -65,6 +88,7 @@ class EditOrderViewController: UITableViewController {
 
         // Configure the cell...
         let lineItem = lineItems[indexPath.row]
+        cell.lineItem = lineItem
         cell.lblProductName.text = lineItem["productName"] as? String
         cell.lblProductColor.text = "Color: " + (lineItem["colorName"] as! String)
         cell.lblProductType.text = "Type: " + (lineItem["productTypeName"] as! String)
@@ -72,6 +96,9 @@ class EditOrderViewController: UITableViewController {
         cell.imgProduct.layer.borderWidth = 2
         cell.imgProduct.layer.borderColor =
             UIColor(red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 157.0 / 255.0, alpha: 1.0).cgColor
+        cell.btnSelect.titleLabel?.font = UIFont.fontAwesome(ofSize: 20)
+        cell.btnSelect.setTitle(String.fontAwesomeIcon(name: .circleO), for: .normal)
+        cell.setCellState(isSelected: lineItem["isSelected"] as! Bool)
         
         do {
             // get the image from the cache if we can

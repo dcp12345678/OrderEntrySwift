@@ -273,6 +273,9 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zue-aH-Hew">
                                                     <rect key="frame" x="0.0" y="24.5" width="30" height="30"/>
                                                     <state key="normal" title="X"/>
+                                                    <connections>
+                                                        <action selector="onBtnSelectTapped:" destination="LHy-8c-0wh" eventType="touchUpInside" id="280-js-CQx"/>
+                                                    </connections>
                                                 </button>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VAh-Fb-fpE">
                                                     <rect key="frame" x="41" y="4.5" width="110" height="70"/>
@@ -323,6 +326,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="btnSelect" destination="zue-aH-Hew" id="b2G-UM-I8M"/>
                                     <outlet property="imgProduct" destination="VAh-Fb-fpE" id="moE-XT-PQn"/>
                                     <outlet property="lblLineItemID" destination="dBf-4V-TT9" id="z7S-Qg-kt2"/>
                                     <outlet property="lblProductColor" destination="Kwh-rH-VBS" id="mr2-WE-bAt"/>

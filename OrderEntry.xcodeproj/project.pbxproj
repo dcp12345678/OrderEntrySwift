@@ -17,6 +17,17 @@
 		8A058EC01FA401E100EE27B5 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A058EBF1FA401E100EE27B5 /* Config.plist */; };
 		8A058EC21FA4027F00EE27B5 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A058EC11FA4027F00EE27B5 /* Helper.swift */; };
 		8A4175C41FBF420E00FD682C /* LookupApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4175C31FBF420E00FD682C /* LookupApi.swift */; };
+		8A4C51AA1FC6181D00FAB8C0 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C519F1FC6181B00FAB8C0 /* Enum.swift */; };
+		8A4C51AB1FC6181D00FAB8C0 /* FontAwesomeSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C51A01FC6181C00FAB8C0 /* FontAwesomeSegmentedControl.swift */; };
+		8A4C51AC1FC6181D00FAB8C0 /* FontAwesomeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C51A11FC6181C00FAB8C0 /* FontAwesomeImageView.swift */; };
+		8A4C51AD1FC6181D00FAB8C0 /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8A4C51A21FC6181C00FAB8C0 /* FontAwesome.otf */; };
+		8A4C51AE1FC6181D00FAB8C0 /* FontAwesomeBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C51A31FC6181C00FAB8C0 /* FontAwesomeBarButtonItem.swift */; };
+		8A4C51AF1FC6181D00FAB8C0 /* FontAwesomeImageRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C51A41FC6181D00FAB8C0 /* FontAwesomeImageRepresentable.swift */; };
+		8A4C51B01FC6181D00FAB8C0 /* FontAwesomeTextRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C51A51FC6181D00FAB8C0 /* FontAwesomeTextRepresentable.swift */; };
+		8A4C51B11FC6181D00FAB8C0 /* FontAwesome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C51A61FC6181D00FAB8C0 /* FontAwesome.swift */; };
+		8A4C51B21FC6181D00FAB8C0 /* FontAwesomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C51A71FC6181D00FAB8C0 /* FontAwesomeView.swift */; };
+		8A4C51B31FC6181D00FAB8C0 /* FontAwesomeTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C51A81FC6181D00FAB8C0 /* FontAwesomeTabBarItem.swift */; };
+		8A4C51B41FC6181D00FAB8C0 /* FontAwesomeStateRequirement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C51A91FC6181D00FAB8C0 /* FontAwesomeStateRequirement.swift */; };
 		8A5D3B201FB0F69B00485829 /* ApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D3B1E1FB0F69B00485829 /* ApiHelper.swift */; };
 		8A5D3B211FB0F69B00485829 /* AuthApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D3B1F1FB0F69B00485829 /* AuthApi.swift */; };
 		8A5D3B241FB1082400485829 /* OrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A5D3B231FB1082400485829 /* OrderCell.xib */; };
@@ -37,6 +48,18 @@
 		8A058EBF1FA401E100EE27B5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		8A058EC11FA4027F00EE27B5 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		8A4175C31FBF420E00FD682C /* LookupApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookupApi.swift; sourceTree = "<group>"; };
+		8A4C519E1FC6181B00FAB8C0 /* FontAwesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontAwesome.h; sourceTree = "<group>"; };
+		8A4C519F1FC6181B00FAB8C0 /* Enum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
+		8A4C51A01FC6181C00FAB8C0 /* FontAwesomeSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAwesomeSegmentedControl.swift; sourceTree = "<group>"; };
+		8A4C51A11FC6181C00FAB8C0 /* FontAwesomeImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAwesomeImageView.swift; sourceTree = "<group>"; };
+		8A4C51A21FC6181C00FAB8C0 /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
+		8A4C51A31FC6181C00FAB8C0 /* FontAwesomeBarButtonItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAwesomeBarButtonItem.swift; sourceTree = "<group>"; };
+		8A4C51A41FC6181D00FAB8C0 /* FontAwesomeImageRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAwesomeImageRepresentable.swift; sourceTree = "<group>"; };
+		8A4C51A51FC6181D00FAB8C0 /* FontAwesomeTextRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAwesomeTextRepresentable.swift; sourceTree = "<group>"; };
+		8A4C51A61FC6181D00FAB8C0 /* FontAwesome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAwesome.swift; sourceTree = "<group>"; };
+		8A4C51A71FC6181D00FAB8C0 /* FontAwesomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAwesomeView.swift; sourceTree = "<group>"; };
+		8A4C51A81FC6181D00FAB8C0 /* FontAwesomeTabBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAwesomeTabBarItem.swift; sourceTree = "<group>"; };
+		8A4C51A91FC6181D00FAB8C0 /* FontAwesomeStateRequirement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FontAwesomeStateRequirement.swift; sourceTree = "<group>"; };
 		8A5D3B1E1FB0F69B00485829 /* ApiHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiHelper.swift; sourceTree = "<group>"; };
 		8A5D3B1F1FB0F69B00485829 /* AuthApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthApi.swift; sourceTree = "<group>"; };
 		8A5D3B231FB1082400485829 /* OrderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderCell.xib; sourceTree = "<group>"; };
@@ -74,6 +97,7 @@
 		8A058EA41FA3C48800EE27B5 /* OrderEntry */ = {
 			isa = PBXGroup;
 			children = (
+				8A4C519D1FC6173B00FAB8C0 /* FontAwesome */,
 				8A5D3B221FB0F6C500485829 /* api */,
 				8A058EA51FA3C48800EE27B5 /* AppDelegate.swift */,
 				8A058EA91FA3C48800EE27B5 /* Main.storyboard */,
@@ -89,6 +113,25 @@
 				8A5D3B231FB1082400485829 /* OrderCell.xib */,
 			);
 			path = OrderEntry;
+			sourceTree = "<group>";
+		};
+		8A4C519D1FC6173B00FAB8C0 /* FontAwesome */ = {
+			isa = PBXGroup;
+			children = (
+				8A4C519F1FC6181B00FAB8C0 /* Enum.swift */,
+				8A4C519E1FC6181B00FAB8C0 /* FontAwesome.h */,
+				8A4C51A21FC6181C00FAB8C0 /* FontAwesome.otf */,
+				8A4C51A61FC6181D00FAB8C0 /* FontAwesome.swift */,
+				8A4C51A31FC6181C00FAB8C0 /* FontAwesomeBarButtonItem.swift */,
+				8A4C51A41FC6181D00FAB8C0 /* FontAwesomeImageRepresentable.swift */,
+				8A4C51A11FC6181C00FAB8C0 /* FontAwesomeImageView.swift */,
+				8A4C51A01FC6181C00FAB8C0 /* FontAwesomeSegmentedControl.swift */,
+				8A4C51A91FC6181D00FAB8C0 /* FontAwesomeStateRequirement.swift */,
+				8A4C51A81FC6181D00FAB8C0 /* FontAwesomeTabBarItem.swift */,
+				8A4C51A51FC6181D00FAB8C0 /* FontAwesomeTextRepresentable.swift */,
+				8A4C51A71FC6181D00FAB8C0 /* FontAwesomeView.swift */,
+			);
+			name = FontAwesome;
 			sourceTree = "<group>";
 		};
 		8A5D3B221FB0F6C500485829 /* api */ = {
@@ -165,6 +208,7 @@
 			files = (
 				8A5D3B241FB1082400485829 /* OrderCell.xib in Resources */,
 				8A058EB01FA3C48800EE27B5 /* LaunchScreen.storyboard in Resources */,
+				8A4C51AD1FC6181D00FAB8C0 /* FontAwesome.otf in Resources */,
 				8A058EAD1FA3C48800EE27B5 /* Assets.xcassets in Resources */,
 				8A058EC01FA401E100EE27B5 /* Config.plist in Resources */,
 				8A058EAB1FA3C48800EE27B5 /* Main.storyboard in Resources */,
@@ -179,15 +223,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A4175C41FBF420E00FD682C /* LookupApi.swift in Sources */,
+				8A4C51AF1FC6181D00FAB8C0 /* FontAwesomeImageRepresentable.swift in Sources */,
+				8A4C51B41FC6181D00FAB8C0 /* FontAwesomeStateRequirement.swift in Sources */,
 				8A5D3B261FB10BB900485829 /* OrdersApi.swift in Sources */,
+				8A4C51B11FC6181D00FAB8C0 /* FontAwesome.swift in Sources */,
 				8AFB87791FA8BE8C00495264 /* OrderEntryError.swift in Sources */,
+				8A4C51B21FC6181D00FAB8C0 /* FontAwesomeView.swift in Sources */,
 				8A058EB81FA3CF8200EE27B5 /* LoginViewController.swift in Sources */,
+				8A4C51AA1FC6181D00FAB8C0 /* Enum.swift in Sources */,
+				8A4C51AE1FC6181D00FAB8C0 /* FontAwesomeBarButtonItem.swift in Sources */,
 				8A058EBC1FA3DAAE00EE27B5 /* RecentOrdersViewController.swift in Sources */,
+				8A4C51AC1FC6181D00FAB8C0 /* FontAwesomeImageView.swift in Sources */,
 				8A058EC21FA4027F00EE27B5 /* Helper.swift in Sources */,
 				8A5D3B211FB0F69B00485829 /* AuthApi.swift in Sources */,
 				8A058EBE1FA3DBD300EE27B5 /* EditOrderViewController.swift in Sources */,
 				8A058EA61FA3C48800EE27B5 /* AppDelegate.swift in Sources */,
+				8A4C51B31FC6181D00FAB8C0 /* FontAwesomeTabBarItem.swift in Sources */,
 				8A5D3B201FB0F69B00485829 /* ApiHelper.swift in Sources */,
+				8A4C51B01FC6181D00FAB8C0 /* FontAwesomeTextRepresentable.swift in Sources */,
+				8A4C51AB1FC6181D00FAB8C0 /* FontAwesomeSegmentedControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
