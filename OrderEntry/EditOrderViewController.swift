@@ -16,7 +16,6 @@ class LineItemTableViewCell: UITableViewCell {
     @IBOutlet weak var lblLineItemID: UILabel!
 }
 
-
 class EditOrderViewController: UITableViewController {
 
     @IBOutlet var tblLineItems: UITableView!
@@ -70,6 +69,42 @@ class EditOrderViewController: UITableViewController {
         cell.lblProductColor.text = "Color: " + (lineItem["colorName"] as! String)
         cell.lblProductType.text = "Type: " + (lineItem["productTypeName"] as! String)
         cell.lblLineItemID.text = "Line Item ID: " + String(describing: (lineItem["id"] as! Int64))
+        cell.imgProduct.layer.borderWidth = 2
+        cell.imgProduct.layer.borderColor =
+            UIColor(red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 157.0 / 255.0, alpha: 1.0).cgColor
+        
+        do {
+            // get the image from the cache if we can
+            let imageURI = lineItem["productImageUri"] as! String
+            if ApiHelper.imageCache.keys.contains(imageURI) {
+                cell.imgProduct.image = ApiHelper.imageCache[imageURI]
+            } else {
+                let urlPath = (try ApiHelper.getBaseUrl()) + imageURI
+                let imageURL = URL(string: urlPath)!
+                Helper.getPicture(fromUrl: imageURL) { err, image in
+                    if err != nil {
+                        switch err! {
+                        case let .pictureDownloadError(msg):
+                            Helper.showError(parentController: self, errorMessage: msg)
+                        default:
+                            print("unknown error when downloading picture: \(err!)")
+                        }
+                    } else {
+                        // cache the image so if we need the same image later we don't
+                        // have to fetch it
+                        ApiHelper.imageCache[imageURI] = image
+                        
+                        // load the image to the cell
+                        DispatchQueue.main.async {
+                            cell.imgProduct.image = image
+                        }
+                    }
+                }
+            }
+        } catch {
+            Helper.showError(parentController: self, errorMessage: "\(error)")
+        }
+
         return cell
     }
 

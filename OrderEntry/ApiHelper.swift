@@ -7,11 +7,18 @@
 //
 
 import Foundation
+import UIKit
 
 class ApiHelper {
     
+    private static var baseUrl: String = ""
+    
+    static var imageCache = [String: UIImage]()
+
     static func getBaseUrl() throws -> String {
-        let baseUrl:String = (try Helper.getConfigValue(forKey: "restApi.baseUrl", isRequired: true))!
+        if baseUrl == "" {
+            baseUrl = (try Helper.getConfigValue(forKey: "restApi.baseUrl", isRequired: true))!
+        }
         return baseUrl as String
     }
 }

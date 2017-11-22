@@ -11,6 +11,7 @@ import UIKit
 enum OrderEntryError: Error {
     case configurationError(msg: String)
     case webServiceError(msg: String)
+    case pictureDownloadError(msg: String)
     case urlError(url: String)
     case inputValueError(msg: String)
     case testError(msg: String)
