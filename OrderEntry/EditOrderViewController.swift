@@ -20,7 +20,7 @@ class LineItemTableViewCell: UITableViewCell {
     func setCellState(isSelected: Bool) {
         lineItem["isSelected"] = isSelected
         if (lineItem["isSelected"] as! Bool) == true {
-            btnSelect.setTitle(String.fontAwesomeIcon(name: .circle), for: .normal)
+            btnSelect.setTitle(String.fontAwesomeIcon(name: .checkCircle), for: .normal)
         } else {
             btnSelect.setTitle(String.fontAwesomeIcon(name: .circleO), for: .normal)
         }
