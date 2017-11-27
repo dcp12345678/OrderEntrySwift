@@ -57,16 +57,20 @@ class LoginViewController: UIViewController {
                 
                 Helper.hidePleaseWaitOverlay() {
                     
-                    let dict = loginResult as! [String: Any]
-                    print("final result = \(dict)")
-                    if (dict["result"] as! String == "successful login") {
-                        // login was successful, so store userId for logged in user and then
-                        // go to recent orders screen
-                        Helper.userID = dict["userId"] as! Int64
-                        self.performSegue(withIdentifier: "goToRecentOrdersScreen", sender: self)
+                    if let dict = loginResult as? [String: Any] {
+                        print("final result = \(dict)")
+                        if (dict["result"] as! String == "successful login") {
+                            // login was successful, so store userId for logged in user and then
+                            // go to recent orders screen
+                            Helper.userID = dict["userId"] as! Int64
+                            self.performSegue(withIdentifier: "goToRecentOrdersScreen", sender: self)
+                        } else {
+                            // login failed, show the error
+                            Helper.showError(parentController: self, errorMessage: dict["result"] as! String,
+                                             title: "Login Failed")
+                        }
                     } else {
-                        // login failed, show the error
-                        Helper.showError(parentController: self, errorMessage: dict["result"] as! String,
+                        Helper.showError(parentController: self, errorMessage: "Unable to login, possible network issues",
                                          title: "Login Failed")
                     }
                 }

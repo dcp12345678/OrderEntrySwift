@@ -180,7 +180,21 @@ struct Helper {
         parentController.present(controller, animated: true, completion: nil)
     }
     
-
+    static func showYesNoDialog(parentController: UIViewController, message: String, title: String,
+                                yesHandler: ((UIAlertAction) -> Void)?) {
+        let controller = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let yesAction = UIAlertAction(title: "Yes", style: .destructive, handler: yesHandler)
+        let noAction = UIAlertAction(title: "No", style: .default, handler: nil)
+        controller.addAction(yesAction)
+        controller.addAction(noAction)
+        parentController.present(controller, animated: true, completion: nil)
+        
+    }
+    
     static func showPleaseWaitOverlay(parentController: UIViewController, waitMessage: String = "Please wait...",
                                       completion: (() -> Void)?) {
         pleaseWaitController = UIAlertController(title: nil, message: waitMessage, preferredStyle: .alert)

@@ -43,4 +43,14 @@ class OrdersApi {
         return ret
     }
     
+    static func saveOrder(_ order: NSMutableDictionary) throws -> Any? {
+        let url = "\(try ApiHelper.getBaseUrl())/orderData/save/"
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: order, options: []) else {
+            throw OrderEntryError.webServiceError(msg: "Unable to serialize parameters to JSON")
+        }
+
+        let webServiceResult = try Helper.callWebService(withUrl: url, httpMethod: "POST", httpBody: httpBody)
+        return webServiceResult
+    }
+    
 }
