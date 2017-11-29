@@ -14,6 +14,21 @@ public extension String {
     func trim() -> String {
         return self.trimmingCharacters(in: NSCharacterSet.whitespaces)
     }
+    
+    func substr(startAt: Int, endAt: Int) -> String {
+        let safeEndAt = min(endAt, self.count - 1) // make sure we don't go past end of string!
+        let startIndex = self.index(self.startIndex, offsetBy: startAt)
+        let endIndex = self.index(self.startIndex, offsetBy: safeEndAt + 1)
+        let ret = self[startIndex..<endIndex]
+        return String(ret)
+    }
+
+    subscript(_ range: NSRange) -> String {
+        let start = self.index(self.startIndex, offsetBy: range.lowerBound)
+        let end = self.index(self.startIndex, offsetBy: range.upperBound)
+        let subString = self[start..<end]
+        return String(subString)
+    }
 }
 
 public extension UIView {
@@ -50,7 +65,9 @@ public extension UIColor {
 
 struct Helper {
     
-    static var userID: Int64 = -1
+    static let DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    
+    static var userId: Int64 = -1
     
     private static var pleaseWaitController: UIViewController?
     
@@ -129,8 +146,9 @@ struct Helper {
         queue.async {
             // create the task to make the web service call asynchronously
             session.dataTask(with: request) { (data, response, error) in
-                if let response = response {
+                if let response = response as? HTTPURLResponse {
                     print(response)
+                    print(response.statusCode)
                 }
                 
                 if let data = data {
@@ -219,6 +237,43 @@ struct Helper {
         guard let text = fieldValue,
                   !text.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty else {
             throw OrderEntryError.inputValueError(msg: "You must enter a value for \(fieldName)")
+        }
+    }
+    
+    static func formatDate(fromDateString dateString: String, fromFormat dateFormat: String = DATE_FORMAT) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        let date = dateFormatter.date(from: dateString)
+        return date
+    }
+    
+    static func convertDateToString(fromDate date: Date, toFormat dateFormat: String = DATE_FORMAT) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        return dateFormatter.string(from: date)
+    }
+    
+    static func saveOrder(order: NSMutableDictionary, parentController: UIViewController, completion: (() -> Void)?) {
+        Helper.showPleaseWaitOverlay(parentController: parentController, waitMessage: "Saving order...") {
+            do {
+                
+                //let loginResult = try AuthApi.login(withUsername: self.loginID.text!, andPassword: self.password.text!)
+                try OrdersApi.saveOrder(order)
+                
+                Helper.hidePleaseWaitOverlay(completion: completion)
+            } catch OrderEntryError.webServiceError(let msg) {
+                Helper.hidePleaseWaitOverlay() {
+                    Helper.showError(parentController: parentController, errorMessage: "Error calling web service: msg = \(msg)");
+                }
+            } catch (OrderEntryError.configurationError(let msg)) {
+                Helper.hidePleaseWaitOverlay() {
+                    Helper.showError(parentController: parentController, errorMessage: msg, title: "Configuration Error")
+                }
+            } catch {
+                Helper.hidePleaseWaitOverlay() {
+                    Helper.showError(parentController: parentController, errorMessage: "Unexpected Error = \(error)");
+                }
+            }
         }
     }
 }

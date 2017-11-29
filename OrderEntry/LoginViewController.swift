@@ -10,7 +10,7 @@ import UIKit
 
 class LoginViewController: UIViewController {
 
-    @IBOutlet weak var loginID: UITextField!
+    @IBOutlet weak var loginId: UITextField!
     
     @IBOutlet weak var password: UITextField!
     
@@ -40,7 +40,7 @@ class LoginViewController: UIViewController {
         
         // validate input
         do {
-            try Helper.checkForNilOrEmpty(forField: "login ID", fieldValue: self.loginID.text)
+            try Helper.checkForNilOrEmpty(forField: "login Id", fieldValue: self.loginId.text)
             try Helper.checkForNilOrEmpty(forField: "password", fieldValue: self.password.text)
         } catch (OrderEntryError.inputValueError(let msg)) {
             Helper.showError(parentController: self, errorMessage: msg, title: "Invalid Input")
@@ -53,7 +53,7 @@ class LoginViewController: UIViewController {
         Helper.showPleaseWaitOverlay(parentController: self, waitMessage: "Logging in...") {
             do {
                 
-                let loginResult = try AuthApi.login(withUsername: self.loginID.text!, andPassword: self.password.text!)
+                let loginResult = try AuthApi.login(withUsername: self.loginId.text!, andPassword: self.password.text!)
                 
                 Helper.hidePleaseWaitOverlay() {
                     
@@ -62,7 +62,7 @@ class LoginViewController: UIViewController {
                         if (dict["result"] as! String == "successful login") {
                             // login was successful, so store userId for logged in user and then
                             // go to recent orders screen
-                            Helper.userID = dict["userId"] as! Int64
+                            Helper.userId = dict["userId"] as! Int64
                             self.performSegue(withIdentifier: "goToRecentOrdersScreen", sender: self)
                         } else {
                             // login failed, show the error

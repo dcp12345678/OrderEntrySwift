@@ -11,7 +11,7 @@ import UIKit
 
 class OrderTableViewCell: UITableViewCell {
     @IBOutlet weak var rootStackView: UIStackView!    
-    @IBOutlet weak var lblOrderID: UILabel!
+    @IBOutlet weak var lblOrderId: UILabel!
     @IBOutlet weak var lblNumItems: UILabel!
     @IBOutlet weak var lblLastUpdate: UILabel!
     @IBOutlet weak var detailView: UIStackView!
@@ -113,7 +113,7 @@ class RecentOrdersViewController: UITableViewController {
                 let rowData = orders?[indexPath.row] as? [String: Any]
                 let id = rowData?["id"] as! Int64
                 do {
-                    let lineItems = try OrdersApi.getOrderLineItems(forOrderID: id)
+                    let lineItems = try OrdersApi.getOrderLineItems(forOrderId: id)
                     
                     var productTypeCounts = [String: Int]()
                     for lineItem in lineItems {
@@ -167,7 +167,7 @@ class RecentOrdersViewController: UITableViewController {
         super.viewWillAppear(animated)
      
         do {
-            let ordersResult = try OrdersApi.getOrders(forUserID: Helper.userID)
+            let ordersResult = try OrdersApi.getOrders(forUserId: Helper.userId)
             self.orders = ordersResult as? [Any]
             print("final result = \(String(describing: self.orders))")
             self.ordersTableView.reloadData()
@@ -211,9 +211,10 @@ class RecentOrdersViewController: UITableViewController {
             as! OrderTableViewCell
         let rowData = orders?[indexPath.row] as? [String: Any]
         let id = rowData?["id"] as! Int64
-        cell.lblOrderID.text = "Order: " + String(describing: id)
+        cell.lblOrderId.text = "Order: " + String(describing: id)
         let lineItems = rowData?["lineItems"] as! [Any]
         cell.lblNumItems.text = "(" + String(describing: lineItems.count) + " items)"
+        cell.lblLastUpdate.text = "Last Update: " + (rowData?["updateDate"] as! String).substr(startAt: 0, endAt: 9)
         cell.contentView.tag = indexPath.row
         
         let gesture = UITapGestureRecognizer(target: self, action: #selector (self.cellViewTapped(_:)))
@@ -294,7 +295,7 @@ class RecentOrdersViewController: UITableViewController {
                 let row = btn.tag
                 let rowData = orders?[row] as? [String: Any]
                 let id = rowData?["id"] as! Int64
-                (segue.destination as! EditOrderViewController).orderID = id
+                (segue.destination as! EditOrderViewController).orderId = id
             }
         }
     }

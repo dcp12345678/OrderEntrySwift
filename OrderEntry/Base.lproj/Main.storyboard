@@ -59,8 +59,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="loginID" destination="s44-Gq-HYZ" id="lJs-bM-BjT"/>
-                        <outlet property="password" destination="3iC-n5-Y4R" id="aTJ-ry-EOY"/>
+                        <outlet property="loginId" destination="s44-Gq-HYZ" id="7Bu-Nm-zFf"/>
+                        <outlet property="password" destination="3iC-n5-Y4R" id="RNp-Sy-14H"/>
                         <segue destination="OIC-RK-smW" kind="show" identifier="goToRecentOrdersScreen" id="YAN-qV-aqj"/>
                     </connections>
                 </viewController>
@@ -230,7 +230,7 @@
                                     <outlet property="detailView" destination="6EU-er-lPp" id="li9-cz-zgE"/>
                                     <outlet property="lblLastUpdate" destination="QFj-jD-hgp" id="qaS-yE-flD"/>
                                     <outlet property="lblNumItems" destination="3uL-u9-L0u" id="W8G-TL-nbM"/>
-                                    <outlet property="lblOrderID" destination="kpR-UQ-Fhu" id="t7n-Kv-aYi"/>
+                                    <outlet property="lblOrderId" destination="kpR-UQ-Fhu" id="6J4-Tc-fZE"/>
                                     <outlet property="productListTable" destination="FeG-YF-Mis" id="pJ9-i5-Ayk"/>
                                     <outlet property="productListTableHeight" destination="Eff-Xf-Ha2" id="EAN-is-H0w"/>
                                     <outlet property="rootStackView" destination="OWa-9K-jGb" id="BIn-fB-YuZ"/>
@@ -335,7 +335,7 @@
                                         <connections>
                                             <outlet property="btnSelect" destination="rju-GY-mfo" id="t6t-9M-QXk"/>
                                             <outlet property="imgProduct" destination="nm3-bY-Os4" id="B09-NF-Be2"/>
-                                            <outlet property="lblLineItemID" destination="Jl8-6j-g9b" id="eTB-Rl-ICV"/>
+                                            <outlet property="lblLineItemId" destination="Jl8-6j-g9b" id="XYH-ZN-A66"/>
                                             <outlet property="lblProductColor" destination="Fm7-38-hdc" id="Cy5-54-lAT"/>
                                             <outlet property="lblProductName" destination="aAK-cB-EbK" id="b1u-j8-Gww"/>
                                             <outlet property="lblProductType" destination="i04-uY-7rp" id="0gC-Yg-lnt"/>

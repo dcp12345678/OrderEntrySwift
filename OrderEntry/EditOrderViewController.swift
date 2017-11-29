@@ -17,7 +17,7 @@ class LineItemTableViewCell: UITableViewCell {
     @IBOutlet weak var imgProduct: UIImageView!
     @IBOutlet weak var lblProductColor: UILabel!
     @IBOutlet weak var lblProductType: UILabel!
-    @IBOutlet weak var lblLineItemID: UILabel!
+    @IBOutlet weak var lblLineItemId: UILabel!
     @IBOutlet weak var btnSelect: UIButton!
     public var lineItem = NSMutableDictionary()
     public var delegate: LineItemTableViewCellDelegate?
@@ -64,7 +64,7 @@ class LineItemTable: UITableView, UITableViewDataSource, UITableViewDelegate {
         cell.lblProductName.text = lineItem["productName"] as? String
         cell.lblProductColor.text = "Color: " + (lineItem["colorName"] as! String)
         cell.lblProductType.text = "Type: " + (lineItem["productTypeName"] as! String)
-        cell.lblLineItemID.text = "Line Item ID: " + String(describing: (lineItem["id"] as! Int64))
+        cell.lblLineItemId.text = "Line Item Id: " + String(describing: (lineItem["id"] as! Int64))
         cell.imgProduct.layer.borderWidth = 2
         cell.imgProduct.layer.borderColor =
             UIColor(red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 157.0 / 255.0, alpha: 1.0).cgColor
@@ -113,35 +113,26 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
     
     @IBOutlet weak var tabBar: UITabBar!
     @IBOutlet weak var tblLineItems: LineItemTable!
-    var orderID: Int64 = -1
+    var orderId: Int64 = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "Edit Order (\(orderID))"
+        self.title = "Edit Order (\(orderId))"
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
+    func loadLineItemTable() {
         do {
-            tabBar.delegate = self
-            
-            tblLineItems.separatorColor = UIColor.white
-            tblLineItems.separatorInset = .zero
-            tblLineItems.layoutMargins = .zero
-
-            tblLineItems.parentController = self
-            
-            let lineItems = try OrdersApi.getOrderLineItems(forOrderID: self.orderID)
+            let lineItems = try OrdersApi.getOrderLineItems(forOrderId: self.orderId)
             tblLineItems.lineItems = lineItems
             for lineItem in tblLineItems.lineItems {
                 lineItem["isSelected"] = false
             }
             tblLineItems.dataSource = tblLineItems
             tblLineItems.delegate = tblLineItems
-
+            
             tblLineItems.reloadData()
+            
         } catch OrderEntryError.webServiceError(let msg) {
             Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
         } catch (OrderEntryError.configurationError(let msg)) {
@@ -149,6 +140,20 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
         } catch {
             Helper.showError(parentController: self, errorMessage: "Unexpected Error = \(error)");
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        tabBar.delegate = self
+        
+        tblLineItems.separatorColor = UIColor.white
+        tblLineItems.separatorInset = .zero
+        tblLineItems.layoutMargins = .zero
+
+        tblLineItems.parentController = self
+
+        loadLineItemTable()
     }
 
     func hideTabBar() {
@@ -193,7 +198,45 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
         case 1: // delete
             Helper.showYesNoDialog(parentController: self, message: "Are you sure you want to delete these line items?",
                                    title: "Delete Line Items") { action in
-                Helper.showMessage(parentController: self, message: "They said yes!")
+                //Helper.showMessage(parentController: self, message: "They said yes!")
+                        
+                do {
+                    // determine which line items were selected, since we need to delete these line items
+                    var selectedLineItemIds = Set<Int64>()
+                    for lineItem in self.tblLineItems.lineItems {
+                        if lineItem["isSelected"] as! Bool {
+                            selectedLineItemIds.insert(lineItem["id"] as! Int64)
+                        }
+                    }
+                    
+                    // retrieve the order from persistence so we have latest version
+                    let order = try OrdersApi.getOrder(forOrderId: self.orderId)
+                    
+                    // remove any selected line items from the order since the selected line items need
+                    // to be deleted
+                    if var orderLineItems = order["lineItems"] as? [NSMutableDictionary] {
+                        for ndx in stride(from: orderLineItems.count - 1, to: 0, by: -1) {
+                            let orderLineItemId = orderLineItems[ndx]["id"] as! Int64
+                            if selectedLineItemIds.contains(orderLineItemId) {
+                                orderLineItems.remove(at: ndx)
+                            }
+                        }
+                        order["lineItems"] = orderLineItems
+                    }
+                    
+                    // save the order
+                    try OrdersApi.saveOrder(order)
+                    
+                    // reload the line items table to get the updates
+                    self.loadLineItemTable()
+                    
+                } catch OrderEntryError.webServiceError(let msg) {
+                    Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
+                } catch (OrderEntryError.configurationError(let msg)) {
+                    Helper.showError(parentController: self, errorMessage: msg, title: "Configuration Error")
+                } catch {
+                    Helper.showError(parentController: self, errorMessage: "Unexpected Error = \(error)");
+                }
             }
             break
         default:
