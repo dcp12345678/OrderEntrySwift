@@ -75,7 +75,6 @@ class OrdersApi {
         order["updateDate"] = Helper.convertDateToString(fromDate: order["updateDate"] as! Date)
         
         let json = JSON(order)
-        let id = json["id"].int64
         if let stringJSON = json.rawString(String.Encoding.utf8, options: []) {
             print(stringJSON)
         }

@@ -8,6 +8,10 @@
 
 import UIKit
 
+enum CellExpandedState {
+    case Expanded
+    case Collapsed
+}
 
 class OrderTableViewCell: UITableViewCell {
     @IBOutlet weak var rootStackView: UIStackView!    
@@ -80,7 +84,8 @@ class RecentOrdersViewController: UITableViewController {
     let expandedView = "ExpandedView"
     
     var orders: [Any]? = nil
-    
+    var expandedOrderIds = Set<Int64>()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -101,17 +106,20 @@ class RecentOrdersViewController: UITableViewController {
         ordersTableView.estimatedRowHeight = 120
     }
     
-    @objc func cellViewTapped(_ sender: UITapGestureRecognizer) {
-        let indexPath = NSIndexPath(row: (sender.view?.tag)!, section: 0)
-        //Helper.showMessage(parentController: self, message: "inside cellViewTapped, tag = \((sender.view?.tag)!)")
+    private func expandOrCollapseCell(at indexPath: IndexPath, targetState: CellExpandedState) {
         if let cell = ordersTableView.cellForRow(at: indexPath as IndexPath) as? OrderTableViewCell {
-            print("Cell \(cell) has been tapped.")
-            
-            if !cell.isExpanded {
-                // we need to expand the cell
+            let rowData = orders?[indexPath.row] as? [String: Any]
+            let id = rowData?["id"] as! Int64
+
+            if targetState == .Expanded {
                 
-                let rowData = orders?[indexPath.row] as? [String: Any]
-                let id = rowData?["id"] as! Int64
+                //
+                // we need to expand the cell's detail view
+                //
+                
+                cell.isExpanded = true
+                expandedOrderIds.insert(id)
+                
                 do {
                     let lineItems = try OrdersApi.getOrderLineItems(forOrderId: id)
                     
@@ -151,15 +159,24 @@ class RecentOrdersViewController: UITableViewController {
                 
                 cell.productListTable.reloadData()
             } else {
+                // collapse the cell's detail view
                 cell.detailView.isHidden = true;
+                expandedOrderIds.remove(id)
+                cell.isExpanded = false
             }
-            
-            cell.isExpanded = !cell.isExpanded
+        }
+    }
+    
+    @objc func cellViewTapped(_ sender: UITapGestureRecognizer) {
+        let indexPath = NSIndexPath(row: (sender.view?.tag)!, section: 0) as IndexPath
+        if let cell = ordersTableView.cellForRow(at: indexPath as IndexPath) as? OrderTableViewCell {
+            // if cell is expanded, then collapse it, otherwise, expand it
+            expandOrCollapseCell(at: indexPath, targetState: cell.isExpanded ? CellExpandedState.Collapsed : CellExpandedState.Expanded)
             ordersTableView.beginUpdates()
             ordersTableView.endUpdates()
-            
+        
             // scroll to the row the user tapped
-            tableView.scrollToRow(at: indexPath as IndexPath, at: UITableViewScrollPosition.middle, animated: true)
+            tableView.scrollToRow(at: indexPath, at: UITableViewScrollPosition.middle, animated: true)
         }
     }
     
@@ -171,6 +188,25 @@ class RecentOrdersViewController: UITableViewController {
             self.orders = ordersResult as? [Any]
             print("final result = \(String(describing: self.orders))")
             self.ordersTableView.reloadData()
+            
+            for row in 0..<self.ordersTableView.numberOfRows(inSection: 0) {
+                let indexPath = IndexPath(row: row, section: 0)
+                let rowData = orders?[indexPath.row] as? [String: Any]
+                let id = rowData?["id"] as! Int64
+                let targetState = expandedOrderIds.contains(id) ? CellExpandedState.Expanded : CellExpandedState.Collapsed
+                expandOrCollapseCell(at: indexPath, targetState: targetState)
+            }
+            
+            // if an order was edited, it will be at the top of the list, so scroll to it so user can see it
+            if Helper.wasOrderEdited {
+                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: UITableViewScrollPosition.middle, animated: true)
+                Helper.wasOrderEdited = false
+            }
+
+            ordersTableView.beginUpdates()
+            ordersTableView.endUpdates()
+
+            
         } catch OrderEntryError.webServiceError(let msg) {
             Helper.hidePleaseWaitOverlay() {
                 Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");

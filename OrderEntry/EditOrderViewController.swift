@@ -72,6 +72,7 @@ class LineItemTable: UITableView, UITableViewDataSource, UITableViewDelegate {
         cell.btnSelect.setTitle(String.fontAwesomeIcon(name: .circleO), for: .normal)
         cell.setCellState(isSelected: lineItem["isSelected"] as! Bool)
         cell.delegate = parentController
+        cell.selectionStyle = .none
         
         do {
             // get the image from the cache if we can
@@ -155,7 +156,7 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
 
         loadLineItemTable()
     }
-
+    
     func hideTabBar() {
         var frame = tabBar.frame
         frame.origin.y = self.view.frame.size.height + (frame.size.height)
@@ -215,7 +216,7 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
                     // remove any selected line items from the order since the selected line items need
                     // to be deleted
                     if var orderLineItems = order["lineItems"] as? [NSMutableDictionary] {
-                        for ndx in stride(from: orderLineItems.count - 1, to: 0, by: -1) {
+                        for ndx in stride(from: orderLineItems.count - 1, through: 0, by: -1) {
                             let orderLineItemId = orderLineItems[ndx]["id"] as! Int64
                             if selectedLineItemIds.contains(orderLineItemId) {
                                 orderLineItems.remove(at: ndx)
@@ -226,6 +227,8 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
                     
                     // save the order
                     try OrdersApi.saveOrder(order)
+                    
+                    Helper.wasOrderEdited = true
                     
                     // reload the line items table to get the updates
                     self.loadLineItemTable()

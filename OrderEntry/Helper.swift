@@ -69,6 +69,8 @@ struct Helper {
     
     static var userId: Int64 = -1
     
+    static var wasOrderEdited: Bool = false
+    
     private static var pleaseWaitController: UIViewController?
     
     static func getConfigValue<T>(forKey key: String, isRequired: Bool) throws -> T? {
