@@ -44,6 +44,7 @@ class LineItemTable: UITableView, UITableViewDataSource, UITableViewDelegate {
     weak var parentController: EditOrderViewController!
     let lineItemCellIdentifier = "LineItem"
     var lineItems = [NSMutableDictionary]()
+    var handleLineItemSelection: ((Int64) -> Void)? = nil
     
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -108,6 +109,12 @@ class LineItemTable: UITableView, UITableViewDataSource, UITableViewDelegate {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        NSLog("You selected cell number: \(indexPath.row)")
+        handleLineItemSelection!(lineItems[indexPath.row]["id"] as! Int64)
+    }
+
 }
 
 class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, UITabBarDelegate {
@@ -115,6 +122,7 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
     @IBOutlet weak var tabBar: UITabBar!
     @IBOutlet weak var tblLineItems: LineItemTable!
     var orderId: Int64 = -1
+    var orderLineItemId: Int64 = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,15 +130,25 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
         self.title = "Edit Order (\(orderId))"
     }
     
+    func handleLineItemSelection(orderLineItemId: Int64) {
+        NSLog("it worked! lineItemId = \(orderLineItemId)")
+        self.orderLineItemId = orderLineItemId
+        performSegue(withIdentifier: "editOrderLineItem", sender: self)
+    }
+    
     func loadLineItemTable() {
         do {
             let lineItems = try OrdersApi.getOrderLineItems(forOrderId: self.orderId)
             tblLineItems.lineItems = lineItems
+            
+            // all items are deselected initially
             for lineItem in tblLineItems.lineItems {
                 lineItem["isSelected"] = false
             }
             tblLineItems.dataSource = tblLineItems
             tblLineItems.delegate = tblLineItems
+            
+            tblLineItems.handleLineItemSelection = handleLineItemSelection
             
             tblLineItems.reloadData()
             
@@ -194,7 +212,8 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         switch item.tag  {
         case 0: // edit
-            Helper.showMessage(parentController: self, message: "Edit clicked")
+            //Helper.showMessage(parentController: self, message: "Edit clicked")
+            performSegue(withIdentifier: "editOrderLineItem", sender: self)
             break
         case 1: // delete
             Helper.showYesNoDialog(parentController: self, message: "Are you sure you want to delete these line items?",
@@ -252,4 +271,18 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "editOrderLineItem" {
+            if let dest = segue.destination as? EditOrderLineItemViewController {
+                dest.orderId = orderId
+                dest.orderLineItemId = orderLineItemId
+            }
+        }
+    }
+
 }

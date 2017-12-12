@@ -50,8 +50,19 @@ class OrdersApi {
                 ret.append(loadLineItem(from: elem))
             }
         }
-        //ret["productID"] = dict!["productId"]
         
+        return ret
+    }
+    
+    static func getOrderLineItem(orderId: Int64, orderLineItemId: Int64) throws -> NSMutableDictionary {
+        // call the web service and return the result
+        let url = "\(try ApiHelper.getBaseUrl())/orderData/lineItem/\(orderId)/\(orderLineItemId)"
+        let webServiceResult = try Helper.callWebService(withUrl: url, httpMethod: "GET")
+        //print("webServiceResult = \(webServiceResult)")
+        var ret = NSMutableDictionary()
+        if let elem = webServiceResult as? [String: Any] {
+            ret = loadLineItem(from: elem)
+        }
         return ret
     }
     
