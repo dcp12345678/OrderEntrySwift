@@ -335,8 +335,8 @@
                                         <connections>
                                             <outlet property="btnSelect" destination="rju-GY-mfo" id="t6t-9M-QXk"/>
                                             <outlet property="imgProduct" destination="nm3-bY-Os4" id="B09-NF-Be2"/>
+                                            <outlet property="lblColor" destination="Fm7-38-hdc" id="Cy5-54-lAT"/>
                                             <outlet property="lblLineItemId" destination="Jl8-6j-g9b" id="XYH-ZN-A66"/>
-                                            <outlet property="lblProductColor" destination="Fm7-38-hdc" id="Cy5-54-lAT"/>
                                             <outlet property="lblProductName" destination="aAK-cB-EbK" id="b1u-j8-Gww"/>
                                             <outlet property="lblProductType" destination="i04-uY-7rp" id="0gC-Yg-lnt"/>
                                         </connections>
@@ -504,7 +504,7 @@
                             </tableViewSection>
                             <tableViewSection id="ftQ-mC-J2P">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="productColorCell" rowHeight="100" id="92z-5B-fBT">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="btnSaveCell" rowHeight="100" id="92z-5B-fBT">
                                         <rect key="frame" x="0.0" y="132" width="320" height="100"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="92z-5B-fBT" id="GMg-EP-U6a">
@@ -540,8 +540,9 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="btnSave" destination="EBR-A2-b84" id="WZu-AT-5Cs"/>
+                        <outlet property="lblColor" destination="u2Z-6V-ieQ" id="VcV-81-obz"/>
                         <outlet property="lblProduct" destination="2ZY-06-I7p" id="UBL-Ss-3lX"/>
-                        <outlet property="lblProductColor" destination="u2Z-6V-ieQ" id="VcV-81-obz"/>
                         <outlet property="lblProductType" destination="mFq-QG-MzL" id="pad-Jc-6gd"/>
                         <outlet property="productCell" destination="ZSE-mv-SYb" id="ez4-1z-9xp"/>
                         <outlet property="productColorCell" destination="Xaj-Wy-uAa" id="sdK-My-jeD"/>

@@ -15,7 +15,7 @@ protocol LineItemTableViewCellDelegate {
 class LineItemTableViewCell: UITableViewCell {
     @IBOutlet weak var lblProductName: UILabel!
     @IBOutlet weak var imgProduct: UIImageView!
-    @IBOutlet weak var lblProductColor: UILabel!
+    @IBOutlet weak var lblColor: UILabel!
     @IBOutlet weak var lblProductType: UILabel!
     @IBOutlet weak var lblLineItemId: UILabel!
     @IBOutlet weak var btnSelect: UIButton!
@@ -63,7 +63,7 @@ class LineItemTable: UITableView, UITableViewDataSource, UITableViewDelegate {
         let lineItem = lineItems[indexPath.row] as! NSMutableDictionary
         cell.lineItem = lineItem
         cell.lblProductName.text = lineItem["productName"] as? String
-        cell.lblProductColor.text = "Color: " + (lineItem["colorName"] as! String)
+        cell.lblColor.text = "Color: " + (lineItem["colorName"] as! String)
         cell.lblProductType.text = "Type: " + (lineItem["productTypeName"] as! String)
         cell.lblLineItemId.text = "Line Item Id: " + String(describing: (lineItem["id"] as! Int64))
         cell.imgProduct.layer.borderWidth = 2
@@ -129,6 +129,14 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
         super.viewDidLoad()
 
         self.title = "Edit Order (\(orderId))"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self,
+                                                                 action: #selector(addOnPress))
+    }
+    
+    @objc func addOnPress() {
+        //Helper.showMessage(parentController: self, message: "Add button tapped!")
+        self.orderLineItemId = -1
+        performSegue(withIdentifier: "editOrderLineItem", sender: self)
     }
     
     func handleLineItemSelection(orderLineItemId: Int64) {

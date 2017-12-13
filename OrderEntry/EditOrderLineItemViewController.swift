@@ -17,7 +17,8 @@ class EditOrderLineItemViewController: UITableViewController {
     
     @IBOutlet weak var lblProductType: UILabel!
     @IBOutlet weak var lblProduct: UILabel!
-    @IBOutlet weak var lblProductColor: UILabel!
+    @IBOutlet weak var lblColor: UILabel!
+    @IBOutlet weak var btnSave: UIButton!
     
     var orderId: Int64 = -1
     var orderLineItemId: Int64 = -1
@@ -42,17 +43,31 @@ class EditOrderLineItemViewController: UITableViewController {
         tblOrderLineItem.separatorInset = .zero
         tblOrderLineItem.layoutMargins = .zero
         
+        self.title = (orderLineItemId == -1 ? "Add" : "Edit") + " line item"
+        
         do {
             if orderLineItem == nil {
-                // retrieve the order line item from persistence so we have latest version
-                orderLineItem = try OrdersApi.getOrderLineItem(orderId: orderId, orderLineItemId: orderLineItemId)
-                if let orderLineItem = orderLineItem {
-                    NSLog("orderLineItem = \(orderLineItem)")
-                    lblProductType.text = orderLineItem["productTypeName"] as? String
-                    lblProduct.text = orderLineItem["productName"] as? String
-                    lblProductColor.text = orderLineItem["colorName"] as? String
+                if orderLineItemId == -1 {
+                    // new order line item
+                    lblProductType.text = ""
+                    lblProduct.text = ""
+                    lblColor.text = ""
+                    orderLineItem = NSMutableDictionary()
+                    orderLineItem!["productTypeId"] = -1
+                    orderLineItem!["productId"] = -1
+                    orderLineItem!["colorId"] = -1
+                } else {
+                    // retrieve the order line item from persistence so we have latest version
+                    orderLineItem = try OrdersApi.getOrderLineItem(orderId: orderId, orderLineItemId: orderLineItemId)
+                    if let orderLineItem = orderLineItem {
+                        NSLog("orderLineItem = \(orderLineItem)")
+                        lblProductType.text = orderLineItem["productTypeName"] as? String
+                        lblProduct.text = orderLineItem["productName"] as? String
+                        lblColor.text = orderLineItem["colorName"] as? String
+                    }
                 }
             }
+
         } catch OrderEntryError.webServiceError(let msg) {
             Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
         } catch (OrderEntryError.configurationError(let msg)) {
@@ -63,7 +78,15 @@ class EditOrderLineItemViewController: UITableViewController {
 
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // hide save button unless all values have been entered
+        btnSave.isHidden = lblProductType.text == "" || lblProduct.text == "" || lblColor.text == ""
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
 
     override func didReceiveMemoryWarning() {
@@ -93,18 +116,29 @@ class EditOrderLineItemViewController: UITableViewController {
                 (segue.destination as! PickItemViewController).items = try LookupApi.getProductTypes()
                 (segue.destination as! PickItemViewController).setSelectedItem = {
                     (selectedItem: NSMutableDictionary) in
-                    self.orderLineItem!["productTypeId"] = selectedItem["id"]
-                    self.orderLineItem!["productTypeName"] = selectedItem["name"]
-                    self.lblProductType.text = selectedItem["name"] as? String
+                        if self.orderLineItem!["productTypeId"] as! Int64 != selectedItem["id"] as! Int64 {
+                            // product type was changed, so clear product and color selections since they
+                            // are no longer applicable (e.g. if user changed product type from Car to Truck,
+                            // then "Honda Accord" isn't a valid product for product type Truck)
+                            self.orderLineItem!["productId"] = -1
+                            self.orderLineItem!["productName"] = ""
+                            self.orderLineItem!["colorId"] = -1
+                            self.orderLineItem!["colorName"] = ""
+                            self.lblProduct.text = ""
+                            self.lblColor.text = ""
+                        }
+                        self.orderLineItem!["productTypeId"] = selectedItem["id"]
+                        self.orderLineItem!["productTypeName"] = selectedItem["name"]
+                        self.lblProductType.text = selectedItem["name"] as? String
                 }
                 break
             case "productColor":
                 (segue.destination as! PickItemViewController).items = try LookupApi.getColors()
                 (segue.destination as! PickItemViewController).setSelectedItem = {
                     (selectedItem: NSMutableDictionary) in
-                    self.orderLineItem!["colorId"] = selectedItem["id"]
-                    self.orderLineItem!["colorName"] = selectedItem["name"]
-                    self.lblProductColor.text = selectedItem["name"] as? String
+                        self.orderLineItem!["colorId"] = selectedItem["id"]
+                        self.orderLineItem!["colorName"] = selectedItem["name"]
+                        self.lblColor.text = selectedItem["name"] as? String
                 }
                 break
             default:
@@ -123,12 +157,22 @@ class EditOrderLineItemViewController: UITableViewController {
         do {
             // fetch existing order from persistence
             let order = try OrdersApi.getOrder(forOrderId: self.orderId)
-            
+            let lineItems = order["lineItems"] as! NSMutableArray
+
             if orderLineItemId == -1 {
                 // new line item, so add it
+                let lastItem = lineItems.sorted(by: { (item1: Any, item2: Any) -> Bool in
+                    if let item1 = item1 as? NSMutableDictionary, let item2 = item2 as? NSMutableDictionary {
+                        return (item1["id"] as! Int64) < (item2["id"] as! Int64)
+                    }
+                    return true
+                }).last as! NSMutableDictionary
+                orderLineItem!["id"] = (lastItem["id"] as! Int64) + 1
+                lineItems.add(orderLineItem!)
+                
             } else {
-                // existing line item, so update it
-                let lineItems = order["lineItems"] as! NSMutableArray
+                // existing line item, so update it - we need to find line item in the existing
+                // line item array then load the updated line item
                 for i in 0..<(lineItems).count {
                     let lineItem = lineItems[i] as! NSMutableDictionary
                     if (lineItem["id"] as! Int64) == orderLineItemId {
