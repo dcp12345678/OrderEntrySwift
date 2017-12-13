@@ -43,7 +43,7 @@ class LineItemTable: UITableView, UITableViewDataSource, UITableViewDelegate {
 
     weak var parentController: EditOrderViewController!
     let lineItemCellIdentifier = "LineItem"
-    var lineItems = [NSMutableDictionary]()
+    var lineItems = NSMutableArray()
     var handleLineItemSelection: ((Int64) -> Void)? = nil
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -60,7 +60,7 @@ class LineItemTable: UITableView, UITableViewDataSource, UITableViewDelegate {
             as! LineItemTableViewCell
         
         // Configure the cell...
-        let lineItem = lineItems[indexPath.row]
+        let lineItem = lineItems[indexPath.row] as! NSMutableDictionary
         cell.lineItem = lineItem
         cell.lblProductName.text = lineItem["productName"] as? String
         cell.lblProductColor.text = "Color: " + (lineItem["colorName"] as! String)
@@ -112,7 +112,8 @@ class LineItemTable: UITableView, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         NSLog("You selected cell number: \(indexPath.row)")
-        handleLineItemSelection!(lineItems[indexPath.row]["id"] as! Int64)
+        let lineItem = lineItems[indexPath.row] as! NSMutableDictionary
+        handleLineItemSelection!(lineItem["id"] as! Int64)
     }
 
 }
@@ -142,7 +143,7 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
             tblLineItems.lineItems = lineItems
             
             // all items are deselected initially
-            for lineItem in tblLineItems.lineItems {
+            for case let lineItem as NSMutableDictionary in tblLineItems.lineItems {
                 lineItem["isSelected"] = false
             }
             tblLineItems.dataSource = tblLineItems
@@ -196,7 +197,7 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
     
     func handleSelectionChanged() {
         var isAtLeastOneSelected = false
-        for lineItem in tblLineItems.lineItems {
+        for case let lineItem as NSMutableDictionary in tblLineItems.lineItems {
             if (lineItem["isSelected"] as! Bool) {
                 isAtLeastOneSelected = true
                 break
@@ -223,7 +224,7 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
                 do {
                     // determine which line items were selected, since we need to delete these line items
                     var selectedLineItemIds = Set<Int64>()
-                    for lineItem in self.tblLineItems.lineItems {
+                    for case let lineItem as NSMutableDictionary in self.tblLineItems.lineItems {
                         if lineItem["isSelected"] as! Bool {
                             selectedLineItemIds.insert(lineItem["id"] as! Int64)
                         }

@@ -124,7 +124,7 @@ class RecentOrdersViewController: UITableViewController {
                     let lineItems = try OrdersApi.getOrderLineItems(forOrderId: id)
                     
                     var productTypeCounts = [String: Int]()
-                    for lineItem in lineItems {
+                    for case let lineItem as NSMutableDictionary in lineItems {
                         let productTypeName = lineItem["productTypeName"] as! String
                         productTypeCounts[productTypeName] = (productTypeCounts[productTypeName] ?? 0) + 1
                     }

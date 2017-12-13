@@ -128,9 +128,10 @@ class EditOrderLineItemViewController: UITableViewController {
                 // new line item, so add it
             } else {
                 // existing line item, so update it
-                var lineItems = order["lineItems"] as! [NSMutableDictionary]
+                let lineItems = order["lineItems"] as! NSMutableArray
                 for i in 0..<(lineItems).count {
-                    if (lineItems[i]["id"] as! Int64) == orderLineItemId {
+                    let lineItem = lineItems[i] as! NSMutableDictionary
+                    if (lineItem["id"] as! Int64) == orderLineItemId {
                         // we found the existing line item, so update it with new version
                         lineItems[i] = orderLineItem!
                         print("orderLineItem = \(orderLineItem!)")
@@ -138,12 +139,14 @@ class EditOrderLineItemViewController: UITableViewController {
                         break
                     }
                 }
-                order["lineItems"] = lineItems
             }
             
             print("\(order)")
             let result = try OrdersApi.saveOrder(order)
             print("\(result)")
+            
+            self.navigationController?.popViewController(animated: true)
+
         } catch OrderEntryError.webServiceError(let msg) {
             Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
         } catch (OrderEntryError.configurationError(let msg)) {

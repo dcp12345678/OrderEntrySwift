@@ -21,10 +21,10 @@ class OrdersApi {
             ret["userId"] = elem["userId"] as! Int64
             ret["createDate"] = Helper.formatDate(fromDateString: elem["createDate"] as! String)
             ret["updateDate"] = Helper.formatDate(fromDateString: elem["updateDate"] as! String)
-            var lineItems = [NSMutableDictionary]()
+            let lineItems = NSMutableArray()
             if let lineItemsSource = elem["lineItems"] as? [[String: Any]] {
                 for lineItemElem in lineItemsSource {
-                    lineItems.append(loadLineItem(from: lineItemElem))
+                    lineItems.add(loadLineItem(from: lineItemElem))
                 }
             }
             ret["lineItems"] = lineItems
@@ -39,15 +39,15 @@ class OrdersApi {
         return webServiceResult
     }
     
-    static func getOrderLineItems(forOrderId orderId: Int64) throws -> [NSMutableDictionary] {
+    static func getOrderLineItems(forOrderId orderId: Int64) throws -> NSMutableArray {
         // call the web service and return the result
         let url = "\(try ApiHelper.getBaseUrl())/orderData/lineItems/\(orderId)"
         let webServiceResult = try Helper.callWebService(withUrl: url, httpMethod: "GET")
         //print("webServiceResult = \(webServiceResult)")
-        var ret = [NSMutableDictionary]()
+        let ret = NSMutableArray()
         if let arr = webServiceResult as? [Any] {
             for case let elem as [String: Any] in arr {
-                ret.append(loadLineItem(from: elem))
+                ret.add(loadLineItem(from: elem))
             }
         }
         
