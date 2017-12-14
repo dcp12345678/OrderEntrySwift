@@ -129,6 +129,8 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
         super.viewDidLoad()
 
         self.title = "Edit Order (\(orderId))"
+        
+        // create button for adding new line item
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self,
                                                                  action: #selector(addOnPress))
     }
@@ -185,6 +187,7 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
     }
     
     func hideTabBar() {
+        tabBar.barTintColor = nil
         var frame = tabBar.frame
         frame.origin.y = self.view.frame.size.height + (frame.size.height)
         UIView.animate(withDuration: 0.35, animations: {
@@ -193,6 +196,7 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
     }
     
     func showTabBar() {
+        tabBar.barTintColor = UIColor(red: 0.0 / 187.0, green: 0.0 / 207.0, blue: 157.0 / 255.0, alpha: 1.0)
         var frame = tabBar.frame
         frame.origin.y = self.view.frame.size.height - (frame.size.height)
         UIView.animate(withDuration: 0.35, animations: {
@@ -225,8 +229,9 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
             performSegue(withIdentifier: "editOrderLineItem", sender: self)
             break
         case 1: // delete
+            tabBar.tintColor = UIColor.red
             Helper.showYesNoDialog(parentController: self, message: "Are you sure you want to delete these line items?",
-                                   title: "Delete Line Items") { action in
+                                   title: "Delete Line Items", yesHandler: { action in
                 //Helper.showMessage(parentController: self, message: "They said yes!")
                         
                 do {
@@ -261,6 +266,9 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
                     // reload the line items table to get the updates
                     self.loadLineItemTable()
                     
+                    // restore tab bar tint color to original color since delete is complete
+                    tabBar.tintColor = nil
+                    
                 } catch OrderEntryError.webServiceError(let msg) {
                     Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
                 } catch (OrderEntryError.configurationError(let msg)) {
@@ -268,7 +276,10 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
                 } catch {
                     Helper.showError(parentController: self, errorMessage: "Unexpected Error = \(error)");
                 }
-            }
+            }, noHandler: { action in
+                // restore tab bar tint color to original color since delete was cancelled
+                tabBar.tintColor = nil
+            })
             break
         default:
             break

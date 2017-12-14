@@ -201,14 +201,14 @@ struct Helper {
     }
     
     static func showYesNoDialog(parentController: UIViewController, message: String, title: String,
-                                yesHandler: ((UIAlertAction) -> Void)?) {
+                                yesHandler: ((UIAlertAction) -> Void)?, noHandler: ((UIAlertAction) -> Void)? = nil) {
         let controller = UIAlertController(
             title: title,
             message: message,
             preferredStyle: .alert
         )
         let yesAction = UIAlertAction(title: "Yes", style: .destructive, handler: yesHandler)
-        let noAction = UIAlertAction(title: "No", style: .default, handler: nil)
+        let noAction = UIAlertAction(title: "No", style: .default, handler: noHandler)
         controller.addAction(yesAction)
         controller.addAction(noAction)
         parentController.present(controller, animated: true, completion: nil)

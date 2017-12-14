@@ -43,7 +43,7 @@ class EditOrderLineItemViewController: UITableViewController {
         tblOrderLineItem.separatorInset = .zero
         tblOrderLineItem.layoutMargins = .zero
         
-        self.title = (orderLineItemId == -1 ? "Add" : "Edit") + " line item"
+        self.title = (orderLineItemId == -1 ? "Add" : "Edit") + " Line Item"
         
         do {
             if orderLineItem == nil {
