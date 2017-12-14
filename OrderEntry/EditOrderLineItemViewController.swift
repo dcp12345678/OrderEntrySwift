@@ -45,6 +45,10 @@ class EditOrderLineItemViewController: UITableViewController {
         
         self.title = (orderLineItemId == -1 ? "Add" : "Edit") + " Line Item"
         
+        // create button for cancelling the edit
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self,
+                                                                action: #selector(cancelOnPress))
+
         do {
             if orderLineItem == nil {
                 if orderLineItemId == -1 {
@@ -78,11 +82,23 @@ class EditOrderLineItemViewController: UITableViewController {
 
     }
     
+    @objc func cancelOnPress() {
+        //Helper.showMessage(parentController: self, message: "Cancel button tapped!")
+        self.navigationController?.popViewController(animated: true)
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // hide save button unless all values have been entered
         btnSave.isHidden = lblProductType.text == "" || lblProduct.text == "" || lblColor.text == ""
+        
+        if orderLineItem?["productTypeId"] as! Int64 == -1 {
+            // no product type was selected yet, so hide product and color cells since those
+            // aren't applicable until a product type is selected
+            productCell.isHidden = true
+            productColorCell.isHidden = true
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -130,6 +146,10 @@ class EditOrderLineItemViewController: UITableViewController {
                         self.orderLineItem!["productTypeId"] = selectedItem["id"]
                         self.orderLineItem!["productTypeName"] = selectedItem["name"]
                         self.lblProductType.text = selectedItem["name"] as? String
+                    
+                        // now that a product type has been selected, we can show the product and color cells
+                        self.productCell.isHidden = false
+                        self.productColorCell.isHidden = false
                 }
                 break
             case "productColor":

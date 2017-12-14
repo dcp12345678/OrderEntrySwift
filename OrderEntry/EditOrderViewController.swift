@@ -129,6 +129,10 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
         super.viewDidLoad()
 
         self.title = "Edit Order (\(orderId))"
+
+        // create button for cancelling the edit
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self,
+                                                                action: #selector(doneOnPress))
         
         // create button for adding new line item
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self,
@@ -139,6 +143,11 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
         //Helper.showMessage(parentController: self, message: "Add button tapped!")
         self.orderLineItemId = -1
         performSegue(withIdentifier: "editOrderLineItem", sender: self)
+    }
+    
+    @objc func doneOnPress() {
+        //Helper.showMessage(parentController: self, message: "Cancel button tapped!")
+        self.navigationController?.popViewController(animated: true)
     }
     
     func handleLineItemSelection(orderLineItemId: Int64) {
