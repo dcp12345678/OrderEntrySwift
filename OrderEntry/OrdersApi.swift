@@ -80,10 +80,14 @@ class OrdersApi {
         return lineItem
     }
     
-    static func saveOrder(_ order: NSMutableDictionary) throws -> Any? {
+    static func saveOrder(_ order: NSMutableDictionary) throws -> Int64 {
         // change the dates to strings since the SwiftyJSON parser doesn't work with Dates
-        order["createDate"] = Helper.convertDateToString(fromDate: order["createDate"] as! Date)
-        order["updateDate"] = Helper.convertDateToString(fromDate: order["updateDate"] as! Date)
+        if order["createDate"] != nil {
+            order["createDate"] = Helper.convertDateToString(fromDate: order["createDate"] as! Date)
+        }
+        if order["updateDate"] != nil {
+            order["updateDate"] = Helper.convertDateToString(fromDate: order["updateDate"] as! Date)
+        }
         
         let json = JSON(order)
         if let stringJSON = json.rawString(String.Encoding.utf8, options: []) {
@@ -92,7 +96,11 @@ class OrdersApi {
         let url = "\(try ApiHelper.getBaseUrl())/orderData/save/"
 
         let webServiceResult = try Helper.callWebService(withUrl: url, httpMethod: "POST", httpBody: json.rawData(options: []))
-        return webServiceResult
+        if let elem = webServiceResult as? [String: Any] {
+            return elem["orderId"] as! Int64
+        }
+
+        return -1
     }
     
 }

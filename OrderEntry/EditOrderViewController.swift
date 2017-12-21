@@ -128,8 +128,6 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "Edit Order (\(orderId))"
-
         // create button for cancelling the edit
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self,
                                                                 action: #selector(doneOnPress))
@@ -191,7 +189,9 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
         tblLineItems.layoutMargins = .zero
 
         tblLineItems.parentController = self
-
+        
+        self.title = orderId == -1 ? "New Order" : "Edit Order (\(orderId))"
+        
         loadLineItemTable()
     }
     
@@ -217,6 +217,7 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
     }
     
     func handleSelectionChanged() {
+        // show the tab bar if at least one line item is selected
         var isAtLeastOneSelected = false
         for case let lineItem as NSMutableDictionary in tblLineItems.lineItems {
             if (lineItem["isSelected"] as! Bool) {
@@ -310,8 +311,13 @@ class EditOrderViewController: UIViewController, LineItemTableViewCellDelegate, 
             if let dest = segue.destination as? EditOrderLineItemViewController {
                 dest.orderId = orderId
                 dest.orderLineItemId = orderLineItemId
+                dest.setNewOrderId = setNewOrderId
             }
         }
+    }
+    
+    func setNewOrderId(newOrderId: Int64) {
+        self.orderId = newOrderId
     }
 
 }

@@ -23,6 +23,7 @@ class EditOrderLineItemViewController: UITableViewController {
     var orderId: Int64 = -1
     var orderLineItemId: Int64 = -1
     var orderLineItem: NSMutableDictionary?
+    var setNewOrderId: ((_ newOrderId: Int64) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -175,19 +176,39 @@ class EditOrderLineItemViewController: UITableViewController {
 
     @IBAction func saveOnPress(_ sender: Any) {
         do {
-            // fetch existing order from persistence
-            let order = try OrdersApi.getOrder(forOrderId: self.orderId)
-            let lineItems = order["lineItems"] as! NSMutableArray
+            var order: NSMutableDictionary
+            var lineItems: NSMutableArray
+            
+            if orderId != -1 {
+                // fetch existing order from persistence
+                order = try OrdersApi.getOrder(forOrderId: self.orderId)
+                lineItems = order["lineItems"] as! NSMutableArray
+            } else {
+                // it's a new order
+                order = NSMutableDictionary()
+                order["id"] = -1
+                lineItems = NSMutableArray()
+                order["lineItems"] = lineItems
+                order["userId"] = Helper.userId
+            }
 
             if orderLineItemId == -1 {
                 // new line item, so add it
-                let lastItem = lineItems.sorted(by: { (item1: Any, item2: Any) -> Bool in
-                    if let item1 = item1 as? NSMutableDictionary, let item2 = item2 as? NSMutableDictionary {
-                        return (item1["id"] as! Int64) < (item2["id"] as! Int64)
-                    }
-                    return true
-                }).last as! NSMutableDictionary
-                orderLineItem!["id"] = (lastItem["id"] as! Int64) + 1
+                
+                if orderId != -1 {
+                    // find the last line item (when sorting by line item id) and then
+                    // increment the id; this will be the id we use for the new line item
+                    let lastItem = lineItems.sorted(by: { (item1: Any, item2: Any) -> Bool in
+                        if let item1 = item1 as? NSMutableDictionary, let item2 = item2 as? NSMutableDictionary {
+                            return (item1["id"] as! Int64) < (item2["id"] as! Int64)
+                        }
+                        return true
+                    }).last as! NSMutableDictionary
+                    orderLineItem!["id"] = (lastItem["id"] as! Int64) + 1
+                } else {
+                    // it's a new order, so no line items are present yet; we can just use 1 for the id
+                    orderLineItem!["id"] = 1
+                }
                 lineItems.add(orderLineItem!)
                 
             } else {
@@ -209,6 +230,9 @@ class EditOrderLineItemViewController: UITableViewController {
             let result = try OrdersApi.saveOrder(order)
             print("\(result)")
             
+            if self.setNewOrderId != nil {
+                self.setNewOrderId!(result)
+            }
             self.navigationController?.popViewController(animated: true)
 
         } catch OrderEntryError.webServiceError(let msg) {

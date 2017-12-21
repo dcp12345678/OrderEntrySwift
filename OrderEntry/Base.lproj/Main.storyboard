@@ -245,16 +245,17 @@
                     <navigationItem key="navigationItem" title="Recent Orders" id="Yob-DI-c1F"/>
                     <connections>
                         <outlet property="ordersTableView" destination="Ln3-tQ-Jds" id="k7S-5l-4ik"/>
+                        <segue destination="CS5-tS-rNJ" kind="show" identifier="createOrder" id="d9w-zi-L2Z"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="czS-Ke-A6V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-514.99250374812596" y="845.60000000000002"/>
         </scene>
-        <!--Edit Order-->
+        <!--Edit Order View Controller-->
         <scene sceneID="dUo-mA-cXf">
             <objects>
-                <viewController title="Edit Order" id="CS5-tS-rNJ" customClass="EditOrderViewController" customModule="OrderEntry" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="CS5-tS-rNJ" customClass="EditOrderViewController" customModule="OrderEntry" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Vvh-ja-N0Q"/>
                         <viewControllerLayoutGuide type="bottom" id="Hln-Zm-rhm"/>
@@ -553,7 +554,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qAh-gT-MOQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1368.75" y="866.19718309859161"/>
+            <point key="canvasLocation" x="1382" y="876"/>
         </scene>
         <!--Pick Item View Controller-->
         <scene sceneID="NDh-AN-XAx">
@@ -593,7 +594,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XUC-Fo-tUJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2143.125" y="877.81690140845069"/>
+            <point key="canvasLocation" x="2286" y="876"/>
         </scene>
     </scenes>
     <resources>
@@ -602,5 +603,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="74Y-wv-jmw"/>
+        <segue reference="d9w-zi-L2Z"/>
     </inferredMetricsTieBreakers>
 </document>

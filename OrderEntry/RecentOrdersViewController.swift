@@ -104,6 +104,24 @@ class RecentOrdersViewController: UITableViewController {
         
         ordersTableView.rowHeight = UITableViewAutomaticDimension
         ordersTableView.estimatedRowHeight = 120
+        
+        // create button for order search
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self,
+                                                                action: #selector(searchOnPress))
+
+        // create button for adding new order
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self,
+                                                                action: #selector(addOnPress))
+
+    }
+    
+    @objc func searchOnPress() {
+        Helper.showMessage(parentController: self, message: "search button tapped!")
+    }
+    
+    @objc func addOnPress() {
+        //Helper.showMessage(parentController: self, message: "add button tapped!")
+        performSegue(withIdentifier: "createOrder", sender: self)
     }
     
     private func expandOrCollapseCell(at indexPath: IndexPath, targetState: CellExpandedState) {
@@ -333,6 +351,8 @@ class RecentOrdersViewController: UITableViewController {
                 let id = rowData?["id"] as! Int64
                 (segue.destination as! EditOrderViewController).orderId = id
             }
+        } else if segue.identifier == "createOrder" {
+            (segue.destination as! EditOrderViewController).orderId = -1
         }
     }
 
