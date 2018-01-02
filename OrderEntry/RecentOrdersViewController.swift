@@ -116,7 +116,8 @@ class RecentOrdersViewController: UITableViewController {
     }
     
     @objc func searchOnPress() {
-        Helper.showMessage(parentController: self, message: "search button tapped!")
+        //Helper.showMessage(parentController: self, message: "search button tapped!")
+        performSegue(withIdentifier: "searchOrders", sender: self)
     }
     
     @objc func addOnPress() {

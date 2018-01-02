@@ -31,7 +31,9 @@
 		8A5D3B201FB0F69B00485829 /* ApiHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D3B1E1FB0F69B00485829 /* ApiHelper.swift */; };
 		8A5D3B211FB0F69B00485829 /* AuthApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D3B1F1FB0F69B00485829 /* AuthApi.swift */; };
 		8A5D3B261FB10BB900485829 /* OrdersApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A5D3B251FB10BB900485829 /* OrdersApi.swift */; };
+		8A69ECF21FF4822600C9EA63 /* SearchOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A69ECF11FF4822600C9EA63 /* SearchOrdersViewController.swift */; };
 		8A9825AB1FCE14780019FBC0 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9825AA1FCE14780019FBC0 /* SwiftyJSON.swift */; };
+		8ACF90D61FFC21ED007A4562 /* TestView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8ACF90D51FFC21ED007A4562 /* TestView.xib */; };
 		8AF0AF561FD9CDE9009A3A39 /* EditOrderLineItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF0AF551FD9CDE9009A3A39 /* EditOrderLineItemViewController.swift */; };
 		8AFA88401FDC944A00EF5D9B /* PickItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFA883F1FDC944A00EF5D9B /* PickItemViewController.swift */; };
 		8AFB87791FA8BE8C00495264 /* OrderEntryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AFB87781FA8BE8C00495264 /* OrderEntryError.swift */; };
@@ -65,7 +67,9 @@
 		8A5D3B1E1FB0F69B00485829 /* ApiHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiHelper.swift; sourceTree = "<group>"; };
 		8A5D3B1F1FB0F69B00485829 /* AuthApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthApi.swift; sourceTree = "<group>"; };
 		8A5D3B251FB10BB900485829 /* OrdersApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrdersApi.swift; sourceTree = "<group>"; };
+		8A69ECF11FF4822600C9EA63 /* SearchOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchOrdersViewController.swift; sourceTree = "<group>"; };
 		8A9825AA1FCE14780019FBC0 /* SwiftyJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		8ACF90D51FFC21ED007A4562 /* TestView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestView.xib; sourceTree = "<group>"; };
 		8AF0AF551FD9CDE9009A3A39 /* EditOrderLineItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOrderLineItemViewController.swift; sourceTree = "<group>"; };
 		8AFA883F1FDC944A00EF5D9B /* PickItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickItemViewController.swift; sourceTree = "<group>"; };
 		8AFB87781FA8BE8C00495264 /* OrderEntryError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderEntryError.swift; sourceTree = "<group>"; };
@@ -85,6 +89,7 @@
 		8A058E991FA3C48800EE27B5 = {
 			isa = PBXGroup;
 			children = (
+				8ACF90D51FFC21ED007A4562 /* TestView.xib */,
 				8A058EA41FA3C48800EE27B5 /* OrderEntry */,
 				8A058EA31FA3C48800EE27B5 /* Products */,
 			);
@@ -117,6 +122,7 @@
 				8AFB87781FA8BE8C00495264 /* OrderEntryError.swift */,
 				8A9825AA1FCE14780019FBC0 /* SwiftyJSON.swift */,
 				8AFA883F1FDC944A00EF5D9B /* PickItemViewController.swift */,
+				8A69ECF11FF4822600C9EA63 /* SearchOrdersViewController.swift */,
 			);
 			path = OrderEntry;
 			sourceTree = "<group>";
@@ -212,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8ACF90D61FFC21ED007A4562 /* TestView.xib in Resources */,
 				8A058EB01FA3C48800EE27B5 /* LaunchScreen.storyboard in Resources */,
 				8A4C51AD1FC6181D00FAB8C0 /* FontAwesome.otf in Resources */,
 				8A058EAD1FA3C48800EE27B5 /* Assets.xcassets in Resources */,
@@ -249,6 +256,7 @@
 				8A4C51B31FC6181D00FAB8C0 /* FontAwesomeTabBarItem.swift in Sources */,
 				8A5D3B201FB0F69B00485829 /* ApiHelper.swift in Sources */,
 				8A4C51B01FC6181D00FAB8C0 /* FontAwesomeTextRepresentable.swift in Sources */,
+				8A69ECF21FF4822600C9EA63 /* SearchOrdersViewController.swift in Sources */,
 				8A4C51AB1FC6181D00FAB8C0 /* FontAwesomeSegmentedControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
