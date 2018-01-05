@@ -24,7 +24,6 @@ class LoginViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
     /*
     // MARK: - Navigation
@@ -93,4 +92,15 @@ class LoginViewController: UIViewController {
             }
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToRecentOrdersScreen" {
+            var searchCriteria = OrderSearchCriteria()
+            searchCriteria.showRecentOrders = true
+            let nav = segue.destination as! UINavigationController
+            let viewOrdersViewController = nav.topViewController as! ViewOrdersViewController
+            viewOrdersViewController.searchCriteria = searchCriteria
+        }
+    }
+
 }

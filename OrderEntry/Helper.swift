@@ -121,7 +121,6 @@ struct Helper {
         downloadPicTask.resume()
     }
     
-    
     static func callWebService(withUrl url: String, httpMethod: String, httpBody: Data? = nil) throws -> Any? {
         // make sure URL is valid
         guard let webServiceUrl = URL(string: url) else {

@@ -32,13 +32,50 @@ class OrdersApi {
         return ret
     }
     
-    static func getOrders(forUserId userId: Int64) throws -> Any? {
+    static func getOrders(forUserId userId: Int64) throws -> NSMutableArray {
         // call the web service and return the result
         let url = "\(try ApiHelper.getBaseUrl())/orderData/user/\(userId)"
         let webServiceResult = try Helper.callWebService(withUrl: url, httpMethod: "GET")
-        return webServiceResult
+        let ret = NSMutableArray()
+        if let arr = webServiceResult as? [Any] {
+            for case let elem as [String: Any] in arr {
+                ret.add(elem)
+            }
+        }
+        return ret
     }
     
+    static func searchForOrders(searchCriteria: OrderSearchCriteria) throws -> NSMutableArray {
+        var url = "\(try ApiHelper.getBaseUrl())/orderData/search"
+        
+        // build query string parameters for search criteria
+        var separator = "?"
+        if searchCriteria.createDateStart != "" {
+            url += separator + "createDateStart=" + searchCriteria.createDateStart
+            separator = "&"
+        }
+        if searchCriteria.createDateEnd != "" {
+            url += separator + "createDateEnd=" + searchCriteria.createDateEnd
+            separator = "&"
+        }
+        if searchCriteria.orderId != -1 {
+            url += separator + "id=" + String(searchCriteria.orderId)
+            separator = "&"
+        }
+        
+        // call the web service and return the result
+        let webServiceResult = try Helper.callWebService(withUrl: url, httpMethod: "GET")
+        let ret = NSMutableArray()
+        let dictResult = webServiceResult as! [String : Any?]
+        
+        if let arr = dictResult["orders"] as? [Any] {
+            for case let elem as [String: Any] in arr {
+                ret.add(elem)
+            }
+        }
+        return ret
+    }
+
     static func getOrderLineItems(forOrderId orderId: Int64) throws -> NSMutableArray {
         // call the web service and return the result
         let url = "\(try ApiHelper.getBaseUrl())/orderData/lineItems/\(orderId)"

@@ -12,6 +12,7 @@ class SearchOrdersViewController: UIViewController {
     
     @IBOutlet weak var txtCreateDateStart: UITextField!    
     @IBOutlet weak var txtCreateDateEnd: UITextField!
+    @IBOutlet weak var txtOrderId: UITextField!
     
     var datePickerView = UIDatePicker()
     
@@ -82,6 +83,25 @@ class SearchOrdersViewController: UIViewController {
     */
 
     @IBAction func searchOnPress(_ sender: Any) {
-        Helper.showMessage(parentController: self, message: "search button pressed")
+        performSegue(withIdentifier: "viewOrdersForSearchCriteria", sender: self)
     }
+    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "viewOrdersForSearchCriteria" {
+            (segue.destination as! ViewOrdersViewController).title = "Search Orders Results"
+            var searchCriteria = OrderSearchCriteria()
+            searchCriteria.createDateStart = txtCreateDateStart.text!
+            searchCriteria.createDateEnd = txtCreateDateEnd.text!
+            searchCriteria.orderId = txtOrderId.text! == "" ? -1 : Int64(txtOrderId.text!)!
+            (segue.destination as! ViewOrdersViewController).searchCriteria = searchCriteria
+
+        }
+    }
+
 }

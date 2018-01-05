@@ -12,10 +12,11 @@
 		8A058EAD1FA3C48800EE27B5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A058EAC1FA3C48800EE27B5 /* Assets.xcassets */; };
 		8A058EB01FA3C48800EE27B5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A058EAE1FA3C48800EE27B5 /* LaunchScreen.storyboard */; };
 		8A058EB81FA3CF8200EE27B5 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A058EB71FA3CF8200EE27B5 /* LoginViewController.swift */; };
-		8A058EBC1FA3DAAE00EE27B5 /* RecentOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A058EBB1FA3DAAE00EE27B5 /* RecentOrdersViewController.swift */; };
+		8A058EBC1FA3DAAE00EE27B5 /* ViewOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A058EBB1FA3DAAE00EE27B5 /* ViewOrdersViewController.swift */; };
 		8A058EBE1FA3DBD300EE27B5 /* EditOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A058EBD1FA3DBD300EE27B5 /* EditOrderViewController.swift */; };
 		8A058EC01FA401E100EE27B5 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A058EBF1FA401E100EE27B5 /* Config.plist */; };
 		8A058EC21FA4027F00EE27B5 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A058EC11FA4027F00EE27B5 /* Helper.swift */; };
+		8A253A7C1FFD4D12000B07E6 /* OrderSearchCriteria.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A253A7B1FFD4D12000B07E6 /* OrderSearchCriteria.swift */; };
 		8A4175C41FBF420E00FD682C /* LookupApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4175C31FBF420E00FD682C /* LookupApi.swift */; };
 		8A4C51AA1FC6181D00FAB8C0 /* Enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C519F1FC6181B00FAB8C0 /* Enum.swift */; };
 		8A4C51AB1FC6181D00FAB8C0 /* FontAwesomeSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C51A01FC6181C00FAB8C0 /* FontAwesomeSegmentedControl.swift */; };
@@ -47,10 +48,11 @@
 		8A058EAF1FA3C48800EE27B5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8A058EB11FA3C48800EE27B5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8A058EB71FA3CF8200EE27B5 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		8A058EBB1FA3DAAE00EE27B5 /* RecentOrdersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentOrdersViewController.swift; sourceTree = "<group>"; };
+		8A058EBB1FA3DAAE00EE27B5 /* ViewOrdersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewOrdersViewController.swift; sourceTree = "<group>"; };
 		8A058EBD1FA3DBD300EE27B5 /* EditOrderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditOrderViewController.swift; sourceTree = "<group>"; };
 		8A058EBF1FA401E100EE27B5 /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		8A058EC11FA4027F00EE27B5 /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		8A253A7B1FFD4D12000B07E6 /* OrderSearchCriteria.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderSearchCriteria.swift; sourceTree = "<group>"; };
 		8A4175C31FBF420E00FD682C /* LookupApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LookupApi.swift; sourceTree = "<group>"; };
 		8A4C519E1FC6181B00FAB8C0 /* FontAwesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontAwesome.h; sourceTree = "<group>"; };
 		8A4C519F1FC6181B00FAB8C0 /* Enum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Enum.swift; sourceTree = "<group>"; };
@@ -114,7 +116,7 @@
 				8A058EAE1FA3C48800EE27B5 /* LaunchScreen.storyboard */,
 				8A058EB11FA3C48800EE27B5 /* Info.plist */,
 				8A058EB71FA3CF8200EE27B5 /* LoginViewController.swift */,
-				8A058EBB1FA3DAAE00EE27B5 /* RecentOrdersViewController.swift */,
+				8A058EBB1FA3DAAE00EE27B5 /* ViewOrdersViewController.swift */,
 				8A058EBD1FA3DBD300EE27B5 /* EditOrderViewController.swift */,
 				8AF0AF551FD9CDE9009A3A39 /* EditOrderLineItemViewController.swift */,
 				8A058EBF1FA401E100EE27B5 /* Config.plist */,
@@ -123,6 +125,7 @@
 				8A9825AA1FCE14780019FBC0 /* SwiftyJSON.swift */,
 				8AFA883F1FDC944A00EF5D9B /* PickItemViewController.swift */,
 				8A69ECF11FF4822600C9EA63 /* SearchOrdersViewController.swift */,
+				8A253A7B1FFD4D12000B07E6 /* OrderSearchCriteria.swift */,
 			);
 			path = OrderEntry;
 			sourceTree = "<group>";
@@ -246,7 +249,8 @@
 				8A4C51AA1FC6181D00FAB8C0 /* Enum.swift in Sources */,
 				8A4C51AE1FC6181D00FAB8C0 /* FontAwesomeBarButtonItem.swift in Sources */,
 				8AF0AF561FD9CDE9009A3A39 /* EditOrderLineItemViewController.swift in Sources */,
-				8A058EBC1FA3DAAE00EE27B5 /* RecentOrdersViewController.swift in Sources */,
+				8A253A7C1FFD4D12000B07E6 /* OrderSearchCriteria.swift in Sources */,
+				8A058EBC1FA3DAAE00EE27B5 /* ViewOrdersViewController.swift in Sources */,
 				8A4C51AC1FC6181D00FAB8C0 /* FontAwesomeImageView.swift in Sources */,
 				8A9825AB1FCE14780019FBC0 /* SwiftyJSON.swift in Sources */,
 				8A058EC21FA4027F00EE27B5 /* Helper.swift in Sources */,

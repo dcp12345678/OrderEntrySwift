@@ -76,19 +76,20 @@ class ProductListTable: UITableView, UITableViewDataSource, UITableViewDelegate 
     }
 }
 
-class RecentOrdersViewController: UITableViewController {
+class ViewOrdersViewController: UITableViewController {
     
     @IBOutlet var ordersTableView: UITableView!
     
-    let mainViewCellIdentifier = "MainView"
-    let expandedView = "ExpandedView"
+    var searchCriteria = OrderSearchCriteria()
     
-    var orders: [Any]? = nil
+    let mainViewCellIdentifier = "MainView"
+    
+    var orders: NSMutableArray? = nil
     var expandedOrderIds = Set<Int64>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -203,8 +204,13 @@ class RecentOrdersViewController: UITableViewController {
         super.viewWillAppear(animated)
      
         do {
-            let ordersResult = try OrdersApi.getOrders(forUserId: Helper.userId)
-            self.orders = ordersResult as? [Any]
+            if searchCriteria.showRecentOrders {
+                // get most recent orders for user
+                orders = try OrdersApi.getOrders(forUserId: Helper.userId)
+            } else {
+                // use the search criteria to get the orders
+                orders = try OrdersApi.searchForOrders(searchCriteria: searchCriteria)
+            }
             print("final result = \(String(describing: self.orders))")
             self.ordersTableView.reloadData()
             
@@ -227,17 +233,11 @@ class RecentOrdersViewController: UITableViewController {
 
             
         } catch OrderEntryError.webServiceError(let msg) {
-            Helper.hidePleaseWaitOverlay() {
-                Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
-            }
+            Helper.showError(parentController: self, errorMessage: "Error calling web service: msg = \(msg)");
         } catch (OrderEntryError.configurationError(let msg)) {
-            Helper.hidePleaseWaitOverlay() {
-                Helper.showError(parentController: self, errorMessage: msg, title: "Configuration Error")
-            }
+            Helper.showError(parentController: self, errorMessage: msg, title: "Configuration Error")
         } catch {
-            Helper.hidePleaseWaitOverlay() {
-                Helper.showError(parentController: self, errorMessage: "Unexpected Error = \(error)");
-            }
+            Helper.showError(parentController: self, errorMessage: "Unexpected Error = \(error)");
         }
     }
 
