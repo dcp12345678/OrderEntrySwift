@@ -214,6 +214,7 @@ class ViewOrdersViewController: UITableViewController {
             print("final result = \(String(describing: self.orders))")
             self.ordersTableView.reloadData()
             
+            // expand or collapse each order as appropriate
             for row in 0..<self.ordersTableView.numberOfRows(inSection: 0) {
                 let indexPath = IndexPath(row: row, section: 0)
                 let rowData = orders?[indexPath.row] as? [String: Any]
