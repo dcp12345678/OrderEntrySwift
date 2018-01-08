@@ -73,7 +73,7 @@
             <objects>
                 <navigationController id="OIC-RK-smW" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="NVc-Ef-IdQ">
-                        <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="320" height="48"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -266,7 +266,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="B6T-M6-7oT">
-                                <rect key="frame" x="16" y="72" width="288" height="177"/>
+                                <rect key="frame" x="16" y="76" width="288" height="177"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ANZ-vR-nYR">
                                         <rect key="frame" x="0.0" y="0.0" width="288" height="55.5"/>

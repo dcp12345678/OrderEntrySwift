@@ -106,9 +106,15 @@ class ViewOrdersViewController: UITableViewController {
         ordersTableView.rowHeight = UITableViewAutomaticDimension
         ordersTableView.estimatedRowHeight = 120
         
-        // create button for order search
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self,
-                                                                action: #selector(searchOnPress))
+        if self.title == "Search Orders Results" {
+            // create "Done" button for when user is done viewing the search results
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self,
+                                                                    action: #selector(doneOnPress))
+        } else {
+            // create button for order search
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self,
+                                                                    action: #selector(searchOnPress))
+        }
 
         // create button for adding new order
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self,
@@ -124,6 +130,19 @@ class ViewOrdersViewController: UITableViewController {
     @objc func addOnPress() {
         //Helper.showMessage(parentController: self, message: "add button tapped!")
         performSegue(withIdentifier: "createOrder", sender: self)
+    }
+    
+    @objc func doneOnPress() {
+        // This method is called when user presses "Done" button after viewing search results. So
+        // we will just display the recent orders data.
+        searchCriteria.showRecentOrders = true
+        
+        // create button for order search
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self,
+                                                                action: #selector(searchOnPress))
+
+        self.title = "Recent Orders"
+        self.viewWillAppear(true)
     }
     
     private func expandOrCollapseCell(at indexPath: IndexPath, targetState: CellExpandedState) {
